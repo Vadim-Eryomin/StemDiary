@@ -1,0 +1,407 @@
+
+
+input:disabled{
+    background-color: white;
+}
+
+.center{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
+/* classes for login page */
+.login-container{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+.login-image{
+    grid-row-start:  2;
+    grid-row-end: 3;
+    grid-column-start:  2;
+    grid-column-end:  3;
+}
+
+.login-form{
+    grid-row-start:  2;
+    grid-row-end: 3;
+    grid-column-start:  3;
+    grid-column-end:  4;
+}
+.login-inputs{
+    margin-left: 0;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* classes for navigation bar*/
+.navigation{
+    display: flex;
+    justify-content: space-around;
+}
+
+.navigation-min{
+    display: flex;
+    justify-content: space-between;
+    z-index: 9999;
+}
+
+#min-menu-button{
+    position: absolute;
+    right: 0px;
+    border: none;
+    outline: none;
+    font-size: 2em;
+    padding-top: 0;
+    padding-bottom: 0;
+
+}
+
+#menu{
+    position: absolute;
+    right: -300px;
+    display: flex;
+    flex-flow: column wrap;
+    background-color: white;
+    border-color: silver;
+    border-radius: 2px;
+    height: 100%;
+    width: 250px;
+    padding: 15px;
+}
+
+.navigation-bar{
+    width: 50%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* classes for profile page */
+
+.profile-container{
+    padding-top: 50px;
+}
+
+.profile-alert{
+    width: 80%;
+    max-width: 700px;
+    height: 10%;
+    max-height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media only screen and (max-width: 800px){
+    .profile{
+        width: 75%;
+        display: flex;
+        justify-content: space-around;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: white;
+        border-color: silver;
+        border-radius: 5px;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .profile{
+        width: 50%;
+        display: flex;
+        justify-content: space-around;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: white;
+        border-color: silver;
+        border-radius: 5px;
+    }
+}
+
+.profile-data{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+}
+
+.profile-text{
+    text-weight: bold;
+    display: inline;
+}
+
+.profile-input{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom-color: gray;
+    border-bottom-width: 1px;
+}
+
+.profile-button{
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 800px){
+    .colors{
+        width: 75%;
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: white;
+        border-color: silver;
+        border-radius: 5px;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .colors{
+        width: 50%;
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: white;
+        border-color: silver;
+        border-radius: 5px;
+    }
+}
+
+/* classes for news page */
+
+.news-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+}
+
+.news{
+    width: 60%;
+    margin: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    background-color: white;
+    border-color: silver;
+    border-radius: 5px;
+}
+
+.news-image{
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.news-date{
+
+}
+
+/* classes for shop page */
+@media only screen and (max-width: 800px){
+    .filter-container{
+        position: fixed !important;
+        top: -250px;
+        height: 200px;
+        width: 200px;
+        float: left;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .filter-container{
+        position: fixed !important;
+        top: 60px;
+        left: 10px;
+        height: 200px;
+        width: 200px;
+        float: left;
+    }
+}
+
+.filter{
+    display: flex;
+    flex-flow: column wrap;
+}
+
+@media only screen and (min-width: 800px){
+    .shop-container{
+        margin-left: 200px;
+        display: flex;
+        justify-content: right;
+        flex-flow: row wrap;
+    }
+}
+@media only screen and (max-width: 800px){
+    .shop-container{
+        margin-left: 200px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: right;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .product-card{
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        border-color: gray;
+        border-width: 1px;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        width: 25vw;
+    }
+}
+@media only screen and (max-width: 800px){
+    .product-card{
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        border-color: gray;
+        border-width: 1px;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        width: 60vw;
+    }
+}
+
+
+
+.product-card-definition{
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 10px;
+}
+
+.product-card-button{
+
+}
+
+#min-filter{
+    position: fixed;
+}
+
+#button{
+    position: absolute;
+    top: 0px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* classes for basket page */
+.basket-container{
+    width: 75%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.basket-card{
+    width: 80%;
+    border-color: black;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* admin classes */
+.more-button{
+    border: none;
+}
+
+.admin-button{
+    width: 40vw;
+    height: 20vh;
+    margin: 2%;
+}
+
+.admin-container{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+.admin-timetable-label{
+    margin-top: 20px;
+}
+
+/* timetable classes */
+
+
+
+@media only screen and (max-width: 800px){
+    .timetable-card{
+        width: 80%;
+        background-color: white;
+        border-color: silver;
+        border-radius: 2px;
+
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media only screen and (min-width: 800px){
+    .timetable-card{
+        width: 60%;
+        background-color: white;
+        border-color: silver;
+        border-radius: 2px;
+
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.timetable-container{
+    width: 80%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-text{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.timetable-image{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-card-body{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}

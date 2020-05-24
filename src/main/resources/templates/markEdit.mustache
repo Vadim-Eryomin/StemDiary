@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>My page</title>
+
+    <!-- link all need systems --->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- bootstrap --->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- font awesome --->
+    <script src="https://kit.fontawesome.com/925f679068.js" crossorigin="anonymous"></script>
+
+    <!-- React scripts --->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- JQuery Google CDN script --->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body style="background-color: #{{bodyColor}}">
+<div admin="{{admin}}" color="{{navColor}}" id="root"></div>
+<div class="timetable-container" style="margin-left: auto; margin-right: auto;">
+    {{#pupil}}
+        <div class="card" style="margin: 10px; width: 500px; text-align: center;">
+            <div class="card-header" style="text-align: center;">
+                {{name}} {{surname}}
+            </div>
+            <div class="card-body">
+                <form action="/markEdit" method="post">
+                    <p>Предыдущая оценка: {{markA}}</p>
+                    <div class="mark-container">
+                        <label for="markA1">1</label>
+                        <input type="radio" id="markA1" name="markA" value="1">
+                        <label for="markA2">2</label>
+                        <input type="radio" id="markA2" name="markA" value="2">
+                        <label for="markA3">3</label>
+                        <input type="radio" id="markA3" name="markA" value="3">
+                        <label for="markA4">4</label>
+                        <input type="radio" id="markA4" name="markA" value="4">
+                        <label for="markA5">5</label>
+                        <input type="radio" id="markA5" name="markA" value="5">
+                    </div>
+                    <p>Выберите оценку за домашнее задание</p>
+                    <p>Предыдущая оценка: {{markB}}</p>
+                    <div class="mark-container">
+                        <label for="markB1">1</label>
+                        <input type="radio" id="markB1" name="markB" value="1">
+                        <label for="markB2">2</label>
+                        <input type="radio" id="markB2" name="markB" value="2">
+                        <label for="markB3">3</label>
+                        <input type="radio" id="markB3" name="markB" value="3">
+                        <label for="markB4">4</label>
+                        <input type="radio" id="markB4" name="markB" value="4">
+                        <label for="markB5">5</label>
+                        <input type="radio" id="markB5" name="markB" value="5">
+                    </div>
+                    <p>Выберите оценку за работу на уроке</p>
+                    <p>Предыдущая оценка: {{markC}}</p>
+                    <div class="mark-container">
+                        <label for="markC1">1</label>
+                        <input type="radio" id="markC1" name="markC" value="1">
+                        <label for="markC2">2</label>
+                        <input type="radio" id="markC2" name="markC" value="2">
+                        <label for="markC3">3</label>
+                        <input type="radio" id="markC3" name="markC" value="3">
+                        <label for="markC4">4</label>
+                        <input type="radio" id="markC4" name="markC" value="4">
+                        <label for="markC5">5</label>
+                        <input type="radio" id="markC5" name="markC" value="5">
+                    </div>
+
+                    <input type="hidden" value="{{courseId}}" id="courseId" name="courseId">
+                    <input type="hidden" value="{{pupilId}}" id="pupilId" name="pupilId">
+                    <input type="hidden" value="{{date}}" id="date" name="date">
+                    <button type="submit" class="btn btn-outline-success">Редактировать</button>
+                </form>
+            </div>
+        </div>
+    {{/pupil}}
+    {{^pupil}}
+        Добавьте учеников!
+    {{/pupil}}
+</div>
+
+<!-- Navigation panel script--->
+<script src="js/navigation.js"></script>
+<!-- script for auto resizing images--->
+<script src="js/imageEditor.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>My page</title>
+
+    <!-- link all need systems --->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- bootstrap --->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- font awesome --->
+    <script src="https://kit.fontawesome.com/925f679068.js" crossorigin="anonymous"></script>
+
+    <!-- React scripts --->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- JQuery Google CDN script --->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body style="background-color: #{{bodyColor}}">
+<div admin="{{admin}}" color="{{navColor}}" id="root"></div>
+<div class="profile-container">
+    <div class="profile">
+        <form action="/adminShopCreate" method="post">
+            <label for="title">Название</label>
+            <br>
+            <input type="text" name="title" id="title">
+            <br>
+
+            <label for="about">Описание</label>
+            <br>
+            <input type="text" name="about" id="about">
+            <br>
+
+            <label for="cost">Цена</label>
+            <br>
+            <input type="number" name="cost" id="cost">
+            <br>
+
+            <label for="srcToImg">Url до изображения</label>
+            <br>
+            <input type="text" name="srcToImg" id="srcToImg">
+            <br><br>
+
+            <button class="btn btn-outline-success">Сохранить</button>
+        </form>
+
+    </div>
+</div>
+
+<!-- Navigation panel script--->
+<script src="js/navigation.js"></script>
+
+</body>
+</html>
