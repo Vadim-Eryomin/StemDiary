@@ -36,8 +36,8 @@ public class ModelPreparer {
 
         model.addAttribute("login", account.getLogin());
         model.addAttribute("password", account.getPassword());
-        model.addAttribute("navColor", Integer.toHexString(color.navigationColor));
-        model.addAttribute("bodyColor", Integer.toHexString(color.bodyColor));
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
         model.addAttribute("name", names.getName());
         model.addAttribute("surname", names.getSurname());
         model.addAttribute("imgSrc", account.getImgSrc());
@@ -66,8 +66,8 @@ public class ModelPreparer {
         Roles roles = rolesRepository.findById(humanId).get(0);
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
 
     }
@@ -94,8 +94,8 @@ public class ModelPreparer {
             products = (ArrayList<Product>) productRepository.findByCost(cost);
         }
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("products", products);
         model.addAttribute("admin", roles.isAdmin());
     }
@@ -123,8 +123,8 @@ public class ModelPreparer {
         }
 
         model.addAttribute("products", basketModelProducts);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -168,8 +168,8 @@ public class ModelPreparer {
         });
 
         model.addAttribute("courses", courses);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -186,8 +186,8 @@ public class ModelPreparer {
         ArrayList<Product> products = (ArrayList<Product>) productRepository.findAll();
 
         model.addAttribute("products", products);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -204,8 +204,8 @@ public class ModelPreparer {
         ArrayList<Names> names = (ArrayList<Names>) namesRepository.findAll();
 
         model.addAttribute("names", names);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -219,8 +219,8 @@ public class ModelPreparer {
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -249,8 +249,8 @@ public class ModelPreparer {
         model.addAttribute("admin", roles.isAdmin());
         model.addAttribute("teacher", roles.isTeacher());
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", myRoles.isAdmin());
     }
 
@@ -264,8 +264,8 @@ public class ModelPreparer {
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -300,8 +300,8 @@ public class ModelPreparer {
         model.addAttribute("teachers", teachers);
         model.addAttribute("pupils", pupils);
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -369,8 +369,8 @@ public class ModelPreparer {
         model.addAttribute("oldPupils", oldPupilsNames);
         model.addAttribute("time", time);
         model.addAttribute("url", course.getImgSrc());
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -384,8 +384,8 @@ public class ModelPreparer {
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -408,8 +408,8 @@ public class ModelPreparer {
         model.addAttribute("cost", product.getCost());
         model.addAttribute("id", product.getId());
 
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -432,7 +432,7 @@ public class ModelPreparer {
         } else if (roles.isTeacher()) {
             courses = (ArrayList<Course>) courseRepository.findByTeacherId(humanId);
         } else {
-            ArrayList<Pupil> IAmAPupil = (ArrayList<Pupil>) pupilRepository.findById(humanId);
+            ArrayList<Pupil> IAmAPupil = (ArrayList<Pupil>) pupilRepository.findByPupilId(humanId);
             courses = new ArrayList<>();
             IAmAPupil.forEach((pupil)->{
                 courses.add(courseRepository.findById(pupil.getCourseId()).get(0));
@@ -459,14 +459,15 @@ public class ModelPreparer {
                         // TODO: 20.05.2020 оптимизировать!!! добавляет неделю, но выглядит жутковато)
                         course.setNextDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(course.getNextDate()).getTime() + 604800000)));
                     }
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
+
+                courseRepository.save(course);
 
             });
 
         model.addAttribute("course", courses);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -486,9 +487,10 @@ public class ModelPreparer {
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
         Course course = courseRepository.findById(courseId).get(0);
-        //now just find next lesson
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+        System.out.println(course);
         Date date = df.parse(course.getNextDate());
+
         ArrayList<Homework> homeworks = (ArrayList<Homework>) homeworkRepository.findByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate);
         Homework homework = (homeworks.isEmpty() ? new Homework().setHomework("Похоже, пока ничего нет!") : homeworks.get(0));
 
@@ -504,8 +506,8 @@ public class ModelPreparer {
         model.addAttribute("courseId", courseId);
         model.addAttribute("teacherName", teacherName);
         model.addAttribute("teacherImgSrc", loginRepository.findById(teacher.getId()).get(0).getImgSrc());
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
         model.addAttribute("teacher", roles.isTeacher());
     }
@@ -522,7 +524,6 @@ public class ModelPreparer {
 
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
-//        now just find next lesson
 
 //        SimpleDateFormat df = new SimpleDateFormat("dd.MM.YYYY HH:mm");
         Date homeworkDate = new Date(date);
@@ -537,8 +538,8 @@ public class ModelPreparer {
         model.addAttribute("id", homework.getId());
         model.addAttribute("date", date);
         model.addAttribute("courseId", courseId);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
         model.addAttribute("teacher", roles.isTeacher());
     }
@@ -558,7 +559,13 @@ public class ModelPreparer {
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
         ArrayList<PupilWithNameAndLastMark> pupils = new ArrayList<>();
-        ArrayList<Pupil> pupilIds = (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId);
+        ArrayList<Pupil> pupilIds = roles.isAdmin() || roles.isTeacher() ?
+                (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId) :
+                null;
+        if (!roles.isAdmin() && !roles.isTeacher()){
+            pupilIds = new ArrayList<>();
+            pupilIds.add(pupilRepository.findByCourseIdAndPupilId(courseId, humanId).get(0));
+        }
         if (!pupilIds.isEmpty())
             pupilIds.forEach((pupil) -> {
                 PupilWithNameAndLastMark modelPupil = new PupilWithNameAndLastMark();
@@ -580,8 +587,8 @@ public class ModelPreparer {
         model.addAttribute("pupil", pupils);
         model.addAttribute("courseId", courseId);
         model.addAttribute("date", date);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
         model.addAttribute("teacher", roles.isTeacher());
     }
@@ -599,8 +606,8 @@ public class ModelPreparer {
         ArrayList<RegisterRequest> registerRequests = (ArrayList<RegisterRequest>) registerRequestRepository.findAll();
 
         model.addAttribute("registerRequests", registerRequests);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
     public static void prepareRequestEditing(MainRegisterRequestAdminController c){
@@ -618,9 +625,36 @@ public class ModelPreparer {
         RegisterRequest request = registerRequestRepository.findById(id).get(0);
 
         model.addAttribute("request", request);
-        model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
-        model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
+        model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
+    }
+
+    public static void prepare(ErrorController c){
+        LoginRepository loginRepository = c.getLoginRepository();
+        ColorRepository colorRepository = c.getColorRepository();
+        NamesRepository namesRepository = c.getNamesRepository();
+        RolesRepository rolesRepository = c.getRolesRepository();
+
+        Model model = c.getModel();
+        int humanId = Integer.parseInt(c.getHumanId());
+
+        Account account = loginRepository.findById(humanId).get(0);
+        ColorScheme color = colorRepository.findById(humanId).get(0);
+        Names names = namesRepository.findById(humanId).get(0);
+        Roles roles = rolesRepository.findById(humanId).get(0);
+
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
+
+        System.out.println(ColorTranslator.translateColor(color.getBodyColor()));
+        System.out.println(ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("name", names.getName());
+        model.addAttribute("surname", names.getSurname());
+        model.addAttribute("imgSrc", account.getImgSrc());
+
+        model.addAttribute("admin", roles.isAdmin());
+
     }
 
 

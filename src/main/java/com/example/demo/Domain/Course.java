@@ -81,4 +81,16 @@ public class Course {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", teacherId=" + teacherId +
+                ", teacherName='" + teacherName + '\'' +
+                ", imgSrc='" + imgSrc + '\'' +
+                ", nextDate='" + nextDate + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

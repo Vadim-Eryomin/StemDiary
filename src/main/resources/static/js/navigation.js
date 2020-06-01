@@ -3,7 +3,7 @@ let idCounter = 0;
 let admin = document.getElementById('root').getAttribute('admin') === 'true';
 document.getElementById('root').removeAttribute('admin');
 
-let navigationColor = parseInt(document.getElementById('root').getAttribute('color'), 16);
+let navigationColor = document.getElementById('root').getAttribute('color');
 document.getElementById('root').removeAttribute('color');
 
 let h;
@@ -12,7 +12,7 @@ let minMenuAnimateInOutCounter = 0;
 let animationDelay = 200;
 let windowWidth = document.body.offsetWidth;
 
-let styleNavigation = {backgroundColor: '#' + navigationColor.toString(16) };
+let styleNavigation = {backgroundColor: '#' + navigationColor };
 if(document.body.offsetWidth >= 800){
     h = React.createElement('div', {'key': idCounter++, 'className': 'navigation', 'style': styleNavigation}, [
         React.createElement('div', {'key': idCounter++, 'className': 'navigation-bar', 'style': styleNavigation},

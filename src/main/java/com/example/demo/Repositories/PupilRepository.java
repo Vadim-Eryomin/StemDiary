@@ -9,5 +9,7 @@ import java.util.List;
 public interface PupilRepository extends CrudRepository<Pupil, Integer> {
     List<Pupil> findById(int id);
     List<Pupil> findByCourseId(int id);
+    List<Pupil> findByPupilId(int id);
+    List<Pupil> findByCourseIdAndPupilId(int course, int pupil);
     List<Pupil> findAll();
 }

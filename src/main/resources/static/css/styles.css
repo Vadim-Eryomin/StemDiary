@@ -201,6 +201,7 @@ input:disabled{
     background-color: white;
     border-color: silver;
     border-radius: 5px;
+    border-width: 1px;
 }
 
 .news-image{
