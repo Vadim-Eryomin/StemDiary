@@ -241,7 +241,7 @@ public class ModelPreparer {
         Account account = loginRepository.findById(id).get(0);
 
         model.addAttribute("id", names.getId());
-        model.addAttribute("imgSrc", account.getImgSrc());
+        model.addAttribute("imgSrc", account.getImgSrc() == null ? "image/just.png" : account.getImgSrc());
         model.addAttribute("name", names.getName());
         model.addAttribute("surname", names.getSurname());
         model.addAttribute("login", account.getLogin());
@@ -356,6 +356,10 @@ public class ModelPreparer {
             oldPupilsNames.add(namesRepository.findById(p.getPupilId()).get(0));
         }
 
+        // just time in text
+        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm").format(course.getDate());
+        //convert to Chrome type
+        time = time.split(" ")[0] + "T" + time.split(" ")[1];
 
         model.addAttribute("id", course.getId());
         model.addAttribute("name", course.getName());
@@ -363,7 +367,7 @@ public class ModelPreparer {
         model.addAttribute("teachers", teachers);
         model.addAttribute("pupils", pupils);
         model.addAttribute("oldPupils", oldPupilsNames);
-        model.addAttribute("time", new SimpleDateFormat("dd.MM.YYYY HH:mm").format(course.getDate()));
+        model.addAttribute("time", time);
         model.addAttribute("url", course.getImgSrc());
         model.addAttribute("navColor", Integer.toHexString(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", Integer.toHexString(colorScheme.getBodyColor()));
@@ -439,6 +443,10 @@ public class ModelPreparer {
             courses.forEach((course) -> {
                 Names teacherNames = namesRepository.findById(course.getTeacherId()).get(0);
                 course.setTeacherName(teacherNames.getName() + " " + teacherNames.getSurname());
+
+                if(course.getImgSrc() == null || course.getImgSrc().equals("")){
+                    course.setImgSrc("image/just.png");
+                }
 
                 SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY HH:mm");
                 Date now = new Date();

@@ -69,7 +69,7 @@ public class MainAccountsAdminController {
                                 @RequestParam String name, @RequestParam String surname,
                                 @RequestParam(defaultValue = "false", required = false) boolean isAdmin, @RequestParam(defaultValue = "false", required = false) boolean isTeacher,
                                 @RequestParam String login, @RequestParam String password,
-                                @RequestParam String imgSrc) {
+                                @RequestParam(required = false, defaultValue = "image/just.png") String imgSrc) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer
@@ -78,7 +78,7 @@ public class MainAccountsAdminController {
 
         //save data for login
         Account account = new Account();
-        account.setLogin(login).setPassword(password);
+        account.setLogin(login).setPassword(password).setImgSrc(imgSrc);
         loginRepository.save(account);
 
         //save role data
@@ -127,7 +127,8 @@ public class MainAccountsAdminController {
                               @RequestParam(required = false, defaultValue = "false") boolean isAdmin,
                               @RequestParam(required = false, defaultValue = "false") boolean isTeacher,
                               @RequestParam(defaultValue = "noname") String login,
-                              @RequestParam(defaultValue = "noname") String password) {
+                              @RequestParam(defaultValue = "noname") String password,
+                              @RequestParam(required = false, defaultValue = "image/just.png") String imgSrc) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer
@@ -142,7 +143,7 @@ public class MainAccountsAdminController {
         } else {
             //save data for login
             Account account = loginRepository.findById(id).get(0);
-            account.setLogin(login).setPassword(password);
+            account.setLogin(login).setPassword(password).setImgSrc(imgSrc);
             loginRepository.save(account);
 
             //save role data

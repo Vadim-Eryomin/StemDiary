@@ -3,9 +3,9 @@ $(document).ready(
         let allWidth = $('.timetable-container').width();
         let allHeight = $('.timetable-container').height();
 
-        let cardWidth = 250 > allWidth / 5 ? 250 : allWidth / 5;
+        let cardWidth = 300 > allWidth / 5 ? 300 : allWidth / 5;
 
-        let cardHeight = 400 < allHeight / 3 ? allHeight / 3 : 400;
+        let cardHeight = 500 < allHeight / 3 ? allHeight / 3 : 500;
 
         $('.card').width(cardWidth);
         $('.card').height(cardHeight);

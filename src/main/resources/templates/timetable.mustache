@@ -28,17 +28,16 @@
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
 <div class="timetable-container" style="margin-left: auto; margin-right: auto;">
     {{#course}}
-        <div class="card" style="margin: 10px;">
+        <div class="card card-dop" style="margin: 10px;">
             <div class="card-header">
                 {{name}}
             </div>
-            <div class="card-body my-card-body">
-                <img src="{{imgSrc}}" alt="Лого курса" class="timetable-image">
-                <div class="card-text">
-                    {{nextDate}}
-                    <br>
-                    Ведёт: {{teacherName}}
-                </div>
+            <div class="card-body" style="min-height: 220px;">
+                <img src="{{imgSrc}}" class="timetable-image">
+                <span>
+                    {{nextDate}} <br> Ведёт: {{teacherName}}
+                </span>
+
             </div>
             <div class="card-footer">
                 <a href="/timetable?id={{id}}" class="btn btn-outline-success">Перейти</a>
