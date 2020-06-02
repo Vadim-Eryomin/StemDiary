@@ -656,8 +656,6 @@ public class ModelPreparer {
         model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
 
-        System.out.println(ColorTranslator.translateColor(color.getBodyColor()));
-        System.out.println(ColorTranslator.translateColor(color.getNavigationColor()));
         model.addAttribute("name", names.getName());
         model.addAttribute("surname", names.getSurname());
         model.addAttribute("imgSrc", account.getImgSrc());

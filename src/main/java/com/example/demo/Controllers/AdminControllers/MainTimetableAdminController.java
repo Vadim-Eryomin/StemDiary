@@ -135,7 +135,8 @@ public class MainTimetableAdminController {
         //set all data for course and pupils
         Course course = courseRepository.findById(id).get(0);
         course.setTeacherId(Integer.parseInt(teacherId)).setName(name)
-                .setDate(new SimpleDateFormat("YYYY-MM-DD HH:mm").parse(time.split("T")[0] + " " + time.split("T")[1]).getTime())
+                .setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(time.split("T")[0] + " " + time.split("T")[1]).getTime())
+                .setNextDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(course.getDate()))
                 .setImgSrc(url);
         courseRepository.save(course);
 
