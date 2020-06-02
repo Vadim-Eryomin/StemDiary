@@ -59,20 +59,20 @@
             <br>
             <br>
             <label for="isAdmin">Администратор</label>
-            {{#admin}}
+            {{#humanAdmin}}
                 <input type="checkbox" name="isAdmin" id="isAdmin" checked>
-            {{/admin}}
-            {{^admin}}
+            {{/humanAdmin}}
+            {{^humanAdmin}}
                 <input type="checkbox" name="isAdmin" id="isAdmin">
-            {{/admin}}
+            {{/humanAdmin}}
             <br>
             <label for="isTeacher">Учитель</label>
-            {{#teacher}}
+            {{#humanTeacher}}
                 <input type="checkbox" name="isTeacher" id="isTeacher" checked>
-            {{/teacher}}
-            {{^teacher}}
+            {{/humanTeacher}}
+            {{^humanTeacher}}
                 <input type="checkbox" name="isTeacher" id="isTeacher">
-            {{/teacher}}
+            {{/humanTeacher}}
             <br>
 
             <button class="btn btn-outline-success" style="margin-top: 20px;">Сохранить</button>

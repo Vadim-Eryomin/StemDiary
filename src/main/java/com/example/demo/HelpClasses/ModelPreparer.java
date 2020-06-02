@@ -4,6 +4,7 @@ import com.example.demo.Controllers.AdminControllers.*;
 import com.example.demo.Controllers.SimpleControllers.*;
 import com.example.demo.Domain.*;
 import com.example.demo.Domain.ModelDomain.BasketModelProduct;
+import com.example.demo.Domain.ModelDomain.NamesWithRoles;
 import com.example.demo.Domain.ModelDomain.PupilWithNameAndLastMark;
 import com.example.demo.Repositories.*;
 import org.springframework.stereotype.Controller;
@@ -200,13 +201,26 @@ public class ModelPreparer {
         Model model = c.getModel();
 
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
-        Roles roles = rolesRepository.findById(humanId).get(0);
+        Roles myRole = rolesRepository.findById(humanId).get(0);
         ArrayList<Names> names = (ArrayList<Names>) namesRepository.findAll();
 
-        model.addAttribute("names", names);
+        ArrayList<NamesWithRoles> namesWithRoles = new ArrayList<>();
+
+        names.forEach((name) -> {
+            NamesWithRoles nameWithRoles = new NamesWithRoles();
+            nameWithRoles.setId(name.getId()).setName(name.getName()).setSurname(name.getSurname());
+
+            ArrayList<Roles> roles = (ArrayList<Roles>) rolesRepository.findById(name.getId());
+            Roles humanRoles = roles.get(0);
+            nameWithRoles.setAdmin(humanRoles.isAdmin()).setTeacher(humanRoles.isTeacher());
+
+            namesWithRoles.add(nameWithRoles);
+        });
+
+        model.addAttribute("names", namesWithRoles);
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
-        model.addAttribute("admin", roles.isAdmin());
+        model.addAttribute("roleAdmin",  myRole.isAdmin());
     }
 
     public static void prepareAccountCreation(MainAccountsAdminController c) {
@@ -246,8 +260,8 @@ public class ModelPreparer {
         model.addAttribute("surname", names.getSurname());
         model.addAttribute("login", account.getLogin());
         model.addAttribute("password", account.getPassword());
-        model.addAttribute("admin", roles.isAdmin());
-        model.addAttribute("teacher", roles.isTeacher());
+        model.addAttribute("humanAdmin", roles.isAdmin());
+        model.addAttribute("humanTeacher", roles.isTeacher());
 
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
@@ -287,11 +301,9 @@ public class ModelPreparer {
         accountsByRoles.forEach(new Consumer<Roles>() {
             @Override
             public void accept(Roles roles) {
-                if (roles.isAdmin())
-                    return;
                 if (roles.isTeacher())
                     teachers.add(namesRepository.findById(roles.getId()).get(0));
-                else {
+                else if (!roles.isAdmin()){
                     pupils.add(namesRepository.findById(roles.getId()).get(0));
                 }
             }
@@ -326,14 +338,11 @@ public class ModelPreparer {
         accountsByRoles.forEach(new Consumer<Roles>() {
             @Override
             public void accept(Roles roles) {
-                if (roles.isAdmin())
-                    return;
                 if (roles.isTeacher())
                     teachers.add(namesRepository.findById(roles.getId()).get(0));
-                else {
+                else if (!roles.isAdmin()){
                     pupils.add(namesRepository.findById(roles.getId()).get(0));
                 }
-
             }
         });
 

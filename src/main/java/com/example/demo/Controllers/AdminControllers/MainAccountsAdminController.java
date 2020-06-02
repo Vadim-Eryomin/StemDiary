@@ -38,7 +38,7 @@ public class MainAccountsAdminController {
     int id;
 
     @GetMapping("/adminAccount")
-    public String showTimetable(@CookieValue(defaultValue = "noname") String humanId, Model model) {
+    public String showAccounts(@CookieValue(defaultValue = "noname") String humanId, Model model) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer

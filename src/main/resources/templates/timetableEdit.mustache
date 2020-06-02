@@ -80,6 +80,17 @@
 
 <!-- Navigation panel script--->
 <script src="js/navigation.js"></script>
+<!-- Script for resizing inputs--->
+<script>
+    $(document).ready(
+        function(){
+            let width = $('#name').width();
 
+            $("#url").width(width);
+            $("#time").width(width);
+            $("#teacherId").width(width);
+        }
+    );
+</script>
 </body>
 </html>

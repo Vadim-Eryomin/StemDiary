@@ -25,7 +25,7 @@
 
 </head>
 <body style="background-color: #{{bodyColor}}">
-<div admin="{{admin}}" color="{{navColor}}" id="root"></div>
+<div admin="{{roleAdmin}}" color="{{navColor}}" id="root"></div>
 <div class="profile-container">
     <div class="profile">
         <table class="table table-striped table-hover">
@@ -33,6 +33,7 @@
             <tr>
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
+                <th scope="col">Роль</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -41,6 +42,24 @@
             <tr>
                 <th scope="row">{{name}}</th>
                 <td>{{surname}}</td>
+                <td>
+                    {{#admin}}
+                        {{#teacher}}
+                            Администратор, Учитель
+                        {{/teacher}}
+                        {{^teacher}}
+                            Администратор
+                        {{/teacher}}
+                    {{/admin}}
+                    {{^admin}}
+                        {{#teacher}}
+                            Учитель
+                        {{/teacher}}
+                        {{^teacher}}
+                            Ученик
+                        {{/teacher}}
+                    {{/admin}}
+                </td>
                 <td>
                     <form action="/adminAccountEdit" method="get">
                         <input type="hidden" value="{{id}}" name="id" id="id">
@@ -53,12 +72,14 @@
             <tr>
                 <th scope="row">example</th>
                 <td>examplovich</td>
+                <td>Ученик</td>
                 <td><a><i class="fa fa-info-circle"></i></a> </td>
             </tr>
 
             {{/names}}
             <tr>
                 <th scope="row"></th>
+                <td></td>
                 <td></td>
                 <td><a href="/adminAccountCreate"><i class="fa fa-plus"></i></a> </td>
             </tr>
