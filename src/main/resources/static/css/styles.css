@@ -328,10 +328,6 @@ input:disabled{
 }
 
 /* admin classes */
-.more-button{
-    border: none;
-}
-
 .admin-button{
     width: 40vw;
     height: 20vh;

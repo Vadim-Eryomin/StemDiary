@@ -1,6 +1,7 @@
 package com.example.demo.HelpClasses;
 
 import com.example.demo.Controllers.AdminControllers.*;
+import com.example.demo.Controllers.CookieControllers.LoginController;
 import com.example.demo.Controllers.SimpleControllers.*;
 import com.example.demo.Domain.*;
 import com.example.demo.Domain.ModelDomain.BasketModelProduct;
@@ -10,6 +11,7 @@ import com.example.demo.Repositories.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -662,6 +664,16 @@ public class ModelPreparer {
 
         model.addAttribute("admin", roles.isAdmin());
 
+    }
+
+    public static void prepare(LoginController c){
+        CourseRepository courseRepository = c.getCourseRepository();
+
+        Model model = c.getModel();
+
+        ArrayList<Course> courses = (ArrayList<Course>) courseRepository.findAll();
+
+        model.addAttribute("courses", courses);
     }
 
 

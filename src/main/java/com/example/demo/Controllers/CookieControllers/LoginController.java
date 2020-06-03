@@ -3,10 +3,13 @@ package com.example.demo.Controllers.CookieControllers;
 import com.example.demo.Domain.Account;
 import com.example.demo.Domain.RegisterRequest;
 import com.example.demo.HelpClasses.Cryptographer;
+import com.example.demo.HelpClasses.ModelPreparer;
+import com.example.demo.Repositories.CourseRepository;
 import com.example.demo.Repositories.LoginRepository;
 import com.example.demo.Repositories.RegisterRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +26,10 @@ public class LoginController {
     LoginRepository loginRepository;
     @Autowired
     RegisterRequestRepository registerRequestRepository;
+    @Autowired
+    CourseRepository courseRepository;
+
+    Model model;
 
     // connect to website without login cookie
     @GetMapping("/login")
@@ -51,17 +58,57 @@ public class LoginController {
     }
 
     @GetMapping("/register")
-    public String showRegisterPage(){
+    public String showRegisterPage(Model model){
+        this.model = model;
+        ModelPreparer.prepare(this);
         return "register";
     }
 
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String surname,
-                                   @RequestParam String login, @RequestParam String password,
-                                   @RequestParam String imgSrc, @RequestParam String email) {
+                           @RequestParam String login, @RequestParam String password,
+                           @RequestParam String imgSrc, @RequestParam String email,
+                           @RequestParam String course, @RequestParam String phone) {
         RegisterRequest request = new RegisterRequest();
-        request.setLogin(login).setPassword(password).setName(name).setSurname(surname).setEmail(email).setImgSrc(imgSrc);
+        request.setLogin(login).setPassword(password).setName(name).setSurname(surname).setEmail(email).setImgSrc(imgSrc)
+        .setCourse(course).setPhone(phone);
         registerRequestRepository.save(request);
         return "allGoodRegister";
+    }
+
+    public LoginRepository getLoginRepository() {
+        return loginRepository;
+    }
+
+    public LoginController setLoginRepository(LoginRepository loginRepository) {
+        this.loginRepository = loginRepository;
+        return this;
+    }
+
+    public RegisterRequestRepository getRegisterRequestRepository() {
+        return registerRequestRepository;
+    }
+
+    public LoginController setRegisterRequestRepository(RegisterRequestRepository registerRequestRepository) {
+        this.registerRequestRepository = registerRequestRepository;
+        return this;
+    }
+
+    public CourseRepository getCourseRepository() {
+        return courseRepository;
+    }
+
+    public LoginController setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+        return this;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public LoginController setModel(Model model) {
+        this.model = model;
+        return this;
     }
 }

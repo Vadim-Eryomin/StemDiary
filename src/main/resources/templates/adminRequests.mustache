@@ -34,31 +34,47 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             {{#registerRequests}}
-            <tr>
-                <th scope="row">{{name}}</th>
-                <td>{{surname}}</td>
-                <td>
-                    <form action="/adminRequestEdit" method="get">
-                        <input type="hidden" value="{{id}}" name="id" id="id">
-                        <button class="more-button" type="submit"><i class="fa fa-info-circle more-button-image"></i></button>
-                    </form>
-                </td>
-            </tr>
+                <tr>
+                    <th scope="row">{{name}}</th>
+                    <td>{{surname}}</td>
+                    <td>
+                        <form action="/adminRequestEdit" method="get">
+                            <input type="hidden" value="{{id}}" name="id" id="id">
+                            <button class="btn btn-outline-primary" type="submit">Редактировать</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/adminRequestClaim" method="get">
+                            <input type="hidden" value="{{id}}" name="id" id="id">
+                            <button class="btn btn-outline-success" type="submit">Принять</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/adminRequestDelete" method="get">
+                            <input type="hidden" value="{{id}}" name="id" id="id">
+                            <button class="btn btn-outline-danger" type="submit">Отклонить</button>
+                        </form>
+                    </td>
+                </tr>
             {{/registerRequests}}
             {{^registerRequests}}
-            <tr>
-                <th scope="row">example</th>
-                <td>examplovich</td>
-                <td><a><i class="fa fa-info-circle"></i></a> </td>
-            </tr>
+                <tr>
+                    <th scope="row">example</th>
+                    <td>examplovich</td>
+                    <td><button class="btn btn-outline-primary">Редактировать</button></td>
+                </tr>
 
             {{/registerRequests}}
             <tr>
                 <th scope="row"></th>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td><a href="/adminAccountCreate"><i class="fa fa-plus"></i></a> </td>
             </tr>

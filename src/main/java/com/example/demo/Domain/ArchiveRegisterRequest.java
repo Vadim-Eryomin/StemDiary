@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class RegisterRequest {
+public class ArchiveRegisterRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
@@ -20,11 +20,13 @@ public class RegisterRequest {
     String phone;
     String course;
 
+    boolean isAllowed;
+
     public int getId() {
         return id;
     }
 
-    public RegisterRequest setId(int id) {
+    public ArchiveRegisterRequest setId(int id) {
         this.id = id;
         return this;
     }
@@ -33,7 +35,7 @@ public class RegisterRequest {
         return name;
     }
 
-    public RegisterRequest setName(String name) {
+    public ArchiveRegisterRequest setName(String name) {
         this.name = name;
         return this;
     }
@@ -42,7 +44,7 @@ public class RegisterRequest {
         return surname;
     }
 
-    public RegisterRequest setSurname(String surname) {
+    public ArchiveRegisterRequest setSurname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -51,7 +53,7 @@ public class RegisterRequest {
         return password;
     }
 
-    public RegisterRequest setPassword(String password) {
+    public ArchiveRegisterRequest setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -60,7 +62,7 @@ public class RegisterRequest {
         return login;
     }
 
-    public RegisterRequest setLogin(String login) {
+    public ArchiveRegisterRequest setLogin(String login) {
         this.login = login;
         return this;
     }
@@ -69,7 +71,7 @@ public class RegisterRequest {
         return imgSrc;
     }
 
-    public RegisterRequest setImgSrc(String imgSrc) {
+    public ArchiveRegisterRequest setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
         return this;
     }
@@ -78,7 +80,7 @@ public class RegisterRequest {
         return email;
     }
 
-    public RegisterRequest setEmail(String email) {
+    public ArchiveRegisterRequest setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -87,7 +89,7 @@ public class RegisterRequest {
         return phone;
     }
 
-    public RegisterRequest setPhone(String phone) {
+    public ArchiveRegisterRequest setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -96,8 +98,17 @@ public class RegisterRequest {
         return course;
     }
 
-    public RegisterRequest setCourse(String course) {
+    public ArchiveRegisterRequest setCourse(String course) {
         this.course = course;
+        return this;
+    }
+
+    public boolean isAllowed() {
+        return isAllowed;
+    }
+
+    public ArchiveRegisterRequest setAllowed(boolean allowed) {
+        isAllowed = allowed;
         return this;
     }
 }
