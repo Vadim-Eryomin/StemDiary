@@ -44,7 +44,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     }
 
     @RequestMapping("/")
-    public String nullPage(){
+    public String nullPage(@CookieValue(defaultValue = "noname") String humanId){
         //human wants to login or this human hasn't an account
         if (humanId.equals("noname")){
             return "redirect:/login";

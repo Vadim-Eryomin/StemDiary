@@ -424,6 +424,7 @@ public class ModelPreparer {
         model.addAttribute("imgSrc", product.getImgSrc());
         model.addAttribute("cost", product.getCost());
         model.addAttribute("id", product.getId());
+        model.addAttribute("count", product.getCount());
 
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));

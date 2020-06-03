@@ -1,5 +1,8 @@
 package com.example.demo.Domain;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +18,8 @@ public class Product {
     String title;
     int cost;
     String imgSrc;
+
+    int count;
 
     public String getImgSrc() {
         return imgSrc;
@@ -58,6 +63,15 @@ public class Product {
 
     public Product setCost(int cost) {
         this.cost = cost;
+        return this;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public Product setCount(int count) {
+        this.count = count;
         return this;
     }
 }

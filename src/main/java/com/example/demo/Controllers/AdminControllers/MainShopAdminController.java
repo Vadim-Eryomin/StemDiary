@@ -59,7 +59,8 @@ public class MainShopAdminController {
     @PostMapping("/adminShopCreate")
     public String createAccount(@CookieValue(defaultValue = "noname") String humanId, Model model,
                                 @RequestParam String title, @RequestParam int cost,
-                                @RequestParam String srcToImg, @RequestParam String about) {
+                                @RequestParam String srcToImg, @RequestParam String about,
+                                @RequestParam(required = false, defaultValue = "0") int count) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer
@@ -68,7 +69,7 @@ public class MainShopAdminController {
 
         //set data for new product and save
         Product product = new Product();
-        product.setTitle(title).setAbout(about).setCost(cost).setImgSrc(srcToImg);
+        product.setTitle(title).setAbout(about).setCost(cost).setImgSrc(srcToImg).setCount(count);
         productRepository.save(product);
 
         //prepare model for next page
@@ -97,7 +98,8 @@ public class MainShopAdminController {
     public String editAccount(@CookieValue(defaultValue = "noname") String humanId, Model model,
                               @RequestParam int id,
                               @RequestParam String title, @RequestParam int cost,
-                              @RequestParam String srcToImg, @RequestParam String about) {
+                              @RequestParam String srcToImg, @RequestParam String about,
+                              @RequestParam(required = false, defaultValue = "0") int count) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer
@@ -107,7 +109,7 @@ public class MainShopAdminController {
 
         //find and edit product
         Product product = productRepository.findById(id).get(0);
-        product.setTitle(title).setAbout(about).setImgSrc(srcToImg).setCost(cost);
+        product.setTitle(title).setAbout(about).setImgSrc(srcToImg).setCost(cost).setCount(count);
         productRepository.save(product);
 
         //prepare model for next page
