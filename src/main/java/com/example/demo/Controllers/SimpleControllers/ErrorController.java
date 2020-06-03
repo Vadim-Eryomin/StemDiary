@@ -43,6 +43,17 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         return "error";
     }
 
+    @RequestMapping("/")
+    public String nullPage(){
+        //human wants to login or this human hasn't an account
+        if (humanId.equals("noname")){
+            return "redirect:/login";
+        }
+        else {
+            return "redirect:/profile";
+        }
+    }
+
     @Override
     public String getErrorPath() {
         return null;

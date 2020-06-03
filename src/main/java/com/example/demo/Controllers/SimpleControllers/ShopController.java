@@ -25,22 +25,22 @@ public class ShopController {
     Model model;
     String humanId;
     String title;
-    int cost;
+    int costAbove;
+    int costBelow;
 
     @GetMapping("/shop")
-    public String showShop(@CookieValue(defaultValue = "noname") String humanId, Model model, @RequestParam(required = false, defaultValue = "") String title, @RequestParam(required = false, defaultValue = "0") int cost){
+    public String showShop(@CookieValue(defaultValue = "noname") String humanId, Model model,
+                           @RequestParam(required = false, defaultValue = "") String title,
+                           @RequestParam(required = false, defaultValue = "0") int costAbove,
+                           @RequestParam(required = false, defaultValue = "999999") int costBelow){
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
 
         //set data for model preparer
         this.humanId = humanId;
         this.model = model;
-
-        try {
-            this.cost = cost;
-        }catch (Exception ignore){
-            this.cost = 0;
-        }
+        this.costAbove = costAbove;
+        this.costBelow = costBelow;
         this.title = title;
 
         ModelPreparer.prepare(this);
@@ -73,7 +73,51 @@ public class ShopController {
         return title;
     }
 
-    public int getCost() {
-        return cost;
+    public ShopController setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+        return this;
+    }
+
+    public ShopController setRolesRepository(RolesRepository rolesRepository) {
+        this.rolesRepository = rolesRepository;
+        return this;
+    }
+
+    public ShopController setColorRepository(ColorRepository colorRepository) {
+        this.colorRepository = colorRepository;
+        return this;
+    }
+
+    public ShopController setModel(Model model) {
+        this.model = model;
+        return this;
+    }
+
+    public ShopController setHumanId(String humanId) {
+        this.humanId = humanId;
+        return this;
+    }
+
+    public ShopController setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public int getCostAbove() {
+        return costAbove;
+    }
+
+    public ShopController setCostAbove(int costAbove) {
+        this.costAbove = costAbove;
+        return this;
+    }
+
+    public int getCostBelow() {
+        return costBelow;
+    }
+
+    public ShopController setCostBelow(int costBelow) {
+        this.costBelow = costBelow;
+        return this;
     }
 }

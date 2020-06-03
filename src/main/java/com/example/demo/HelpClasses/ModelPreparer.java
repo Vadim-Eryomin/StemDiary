@@ -83,23 +83,29 @@ public class ModelPreparer {
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
         String title = c.getTitle();
-        int cost = c.getCost();
+        int costAbove = c.getCostAbove();
+        int costBelow = c.getCostBelow();
 
         Roles roles = rolesRepository.findById(humanId).get(0);
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         ArrayList<Product> products = (ArrayList<Product>) productRepository.findAll();
 
-        if (!title.equals("") && cost != 0) {
-            products = (ArrayList<Product>) productRepository.findByCostAndTitleContainingIgnoreCase(cost, title);
-        } else if (!title.equals("")) {
-            products = (ArrayList<Product>) productRepository.findByTitleContainingIgnoreCase(title);
-        } else if (cost != 0) {
-            products = (ArrayList<Product>) productRepository.findByCost(cost);
+        if (!title.equals("")){
+            products = (ArrayList<Product>) productRepository.findByCostLessThanEqualAndTitleContainingIgnoreCase(costBelow, title);
+        }
+        else {
+            products = (ArrayList<Product>) productRepository.findByCostLessThanEqual(costBelow);
+        }
+        ArrayList<Product> finalProducts = products;
+        for (int i = 0; i < finalProducts.size(); i++) {
+            if (finalProducts.get(i).getCost() < costAbove){
+                finalProducts.remove(i);
+            }
         }
 
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
-        model.addAttribute("products", products);
+        model.addAttribute("products", finalProducts);
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -674,6 +680,22 @@ public class ModelPreparer {
         ArrayList<Course> courses = (ArrayList<Course>) courseRepository.findAll();
 
         model.addAttribute("courses", courses);
+    }
+
+    public static void prepare(FilterController c){
+        ColorRepository colorRepository = c.getColorRepository();
+        RolesRepository rolesRepository = c.getRolesRepository();
+
+        Model model = c.getModel();
+        int humanId = Integer.parseInt(c.getHumanId());
+
+        ColorScheme color = colorRepository.findById(humanId).get(0);
+        Roles roles = rolesRepository.findById(humanId).get(0);
+
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
+
+        model.addAttribute("admin", roles.isAdmin());
     }
 
 

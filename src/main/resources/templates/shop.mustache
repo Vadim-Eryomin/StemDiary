@@ -26,38 +26,28 @@
 </head>
 <body style="background-color: #{{bodyColor}}">
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
-<div class="filter-container alert alert-success">
-    <div class="filter">
-        <form action="/shop" method="get">
-            <label for="title">Название</label>
-            <br>
-            <input type="text" class="profile-input" style="width: 150px" name="title" id="title">
-            <br>
-            <label for="cost">Стоимость</label>
-            <br>
-            <input type="text" class="profile-input" style="width: 150px" name="cost" id="cost">
-            <br>
-            <button class="btn btn-outline-success" style="margin-top: 10px;">Выбрать</button>
-        </form>
-    </div>
-</div>
-
 <div id="min-filter"></div>
-
 <div class="shop-container">
     {{#products}}
         <form action="/shop/{{id}}" method="post">
-            <div class="product-card">
-                <div>
-                    <img src="image/just.png" class="product-card-image">
+            <div class="card" style="text-align: center; margin: 2%">
+                <div class="card-header">
+                    {{title}}
                 </div>
-                <div class="product-card-definition">
-                    <p>{{title}}</p>
-                    <p>{{about}}</p>
-                    <button class="btn btn-outline-success product-card-button">{{cost}}$</button>
+                <img src="{{imgSrc}}" class="card-img-top" style="margin-left: auto; margin-right: auto;">
+                <div class="card-body">
+                    {{about}}
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success" type="submit">{{cost}}$</button>
                 </div>
             </div>
         </form>
+    {{/products}}
+    {{^products}}
+        <div class="alert alert-success" style="margin-top: 2%; margin-left: auto; margin-right: auto; width: 400px;">
+            Хм... Возможно, ваши фильтры слишком строги?
+        </div>
     {{/products}}
 </div>
 

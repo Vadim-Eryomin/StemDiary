@@ -22,7 +22,7 @@ if(document.body.offsetWidth >= 800){
                 ]),
                 React.createElement('a', {'key': idCounter++, 'href': '/profile', 'className':"navigation-text"}, 'Профиль'),
                 React.createElement('a', {'key': idCounter++, 'href': '/news', 'className':"navigation-text"}, 'Новости'),
-//                React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"navigation-text"}, 'Магазин'),
+                React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"navigation-text"}, 'Магазин'),
                 React.createElement('a', {'key': idCounter++, 'href': '/timetable', 'className':"navigation-text"}, 'Расписание'),
                 admin? React.createElement('a', {'key': idCounter++, 'href': '/admin', 'className':"navigation-text"}, 'Панель Администратора') : null,
                 React.createElement('a', {'key': idCounter++, 'href': '/login', 'className':"navigation-text"}, 'Выйти'),
@@ -41,7 +41,7 @@ else{
             React.createElement('div', {'key': idCounter++, 'id': 'menu'}, [
                 React.createElement('a', {'key': idCounter++, 'href': '/profile', 'className':"min-navigation-text"}, 'Профиль'),
                 React.createElement('a', {'key': idCounter++, 'href': '/news', 'className':"min-navigation-text"}, 'Новости'),
-//                React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"min-navigation-text"}, 'Магазин'),
+                React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"min-navigation-text"}, 'Магазин'),
                 React.createElement('a', {'key': idCounter++, 'href': '/timetable', 'className':"min-navigation-text"}, 'Расписание'),
                 admin? React.createElement('a', {'key': idCounter++, 'href': '/admin', 'className':"min-navigation-text"}, 'Панель Администратора') : null,
                 React.createElement('a', {'key': idCounter++, 'href': '/login', 'className':"min-navigation-text"}, 'Выйти'),

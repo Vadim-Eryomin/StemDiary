@@ -1,6 +1,12 @@
 $(document).ready(
     function(){
-        let needWidth = ($('.product-card').width() - $('.product-card-definition').width())/1.5;
-        $('.product-card-image').width(needWidth);
+        if($(document).width() >= 800){
+            let width = $(document).width() / 7;
+            $(".card-img-top").width(width);
+        }
+        else{
+            let width = $(document).width() / 4;
+            $(".card-img-top").width(width);
+        }
     }
 );
