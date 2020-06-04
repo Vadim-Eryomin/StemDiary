@@ -27,6 +27,10 @@
 <body style="background-color: #{{bodyColor}}">
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
 <div id="min-filter"></div>
+<div style="width: 100vw; text-align: center;">
+    <span class="coins"> У вас стемкоинов: {{coins}} </span>
+</div>
+<div id="alert-container" class="alert-container"></div>
 <div class="shop-container">
     {{#products}}
         <form action="/shop/{{id}}" method="post">
@@ -38,11 +42,12 @@
                 <div class="card-body">
                     {{about}}
                 </div>
-                <div class="card-footer">
+                <div class="card-footer counter">
                     В наличии осталось: {{count}}
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-outline-success" type="submit">{{cost}}$</button>
+                    <button class="btn btn-outline-success click-check" type="button">{{cost}}$</button>
+                    <input type="hidden" value="{{id}}" id="id">
                 </div>
             </div>
         </form>
@@ -60,5 +65,7 @@
 <script src="js/shopImageResizer.js"></script>
 <!-- script for min-filter --->
 <script src="js/shopFilter.js"></script>
+<!-- script for buying --->
+<script src="js/buyChecker.js"></script>
 </body>
 </html>

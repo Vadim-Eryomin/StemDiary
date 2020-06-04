@@ -74,4 +74,16 @@ public class Product {
         this.count = count;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", about='" + about + '\'' +
+                ", title='" + title + '\'' +
+                ", cost=" + cost +
+                ", imgSrc='" + imgSrc + '\'' +
+                ", count=" + count +
+                '}';
+    }
 }

@@ -11,4 +11,5 @@ public interface HomeworkRepository extends CrudRepository<Homework, Integer> {
     List<Homework> findByCourseIdAndDate(int courseId, long date);
     List<Homework> findByCourseId(int courseId);
 
+    boolean existsByCourseIdAndDate(int courseId, long date);
 }

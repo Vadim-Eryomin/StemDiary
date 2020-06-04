@@ -40,4 +40,13 @@ public class Roles {
         isTeacher = teacher;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Roles{" +
+                "id=" + id +
+                ", isAdmin=" + isAdmin +
+                ", isTeacher=" + isTeacher +
+                '}';
+    }
 }

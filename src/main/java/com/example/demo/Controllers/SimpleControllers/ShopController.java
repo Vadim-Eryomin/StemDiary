@@ -1,10 +1,7 @@
 package com.example.demo.Controllers.SimpleControllers;
 
 import com.example.demo.HelpClasses.ModelPreparer;
-import com.example.demo.Repositories.ColorRepository;
-import com.example.demo.Repositories.LoginRepository;
-import com.example.demo.Repositories.ProductRepository;
-import com.example.demo.Repositories.RolesRepository;
+import com.example.demo.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +18,8 @@ public class ShopController {
     RolesRepository rolesRepository;
     @Autowired
     ColorRepository colorRepository;
+    @Autowired
+    StemCoinRepository stemCoinRepository;
     //data for model preparer
     Model model;
     String humanId;
@@ -35,14 +34,16 @@ public class ShopController {
                            @RequestParam(required = false, defaultValue = "999999") int costBelow){
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
-
+        System.out.println("redirect isn't active");
         //set data for model preparer
+        System.out.println("start model data preparing");
         this.humanId = humanId;
         this.model = model;
         this.costAbove = costAbove;
         this.costBelow = costBelow;
         this.title = title;
-
+        System.out.println("end model data preparing");
+        System.out.println("start preparing");
         ModelPreparer.prepare(this);
 
         return "shop";
@@ -118,6 +119,15 @@ public class ShopController {
 
     public ShopController setCostBelow(int costBelow) {
         this.costBelow = costBelow;
+        return this;
+    }
+
+    public StemCoinRepository getStemCoinRepository() {
+        return stemCoinRepository;
+    }
+
+    public ShopController setStemCoinRepository(StemCoinRepository stemCoinRepository) {
+        this.stemCoinRepository = stemCoinRepository;
         return this;
     }
 }

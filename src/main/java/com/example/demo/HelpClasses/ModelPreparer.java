@@ -8,6 +8,7 @@ import com.example.demo.Domain.ModelDomain.BasketModelProduct;
 import com.example.demo.Domain.ModelDomain.NamesWithRoles;
 import com.example.demo.Domain.ModelDomain.PupilWithNameAndLastMark;
 import com.example.demo.Repositories.*;
+import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -76,36 +77,69 @@ public class ModelPreparer {
     }
 
     public static void prepare(ShopController c) {
+        System.out.println("get repositories");
         ProductRepository productRepository = c.getProductRepository();
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
-
+        StemCoinRepository stemCoinRepository = c.getStemCoinRepository();
+        System.out.println("repositories was got");
+        System.out.println("get data");
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
         String title = c.getTitle();
         int costAbove = c.getCostAbove();
         int costBelow = c.getCostBelow();
+        System.out.println("data was got");
 
+        System.out.println("get user and shop data");
         Roles roles = rolesRepository.findById(humanId).get(0);
+        System.out.println("roles:" + roles.toString());
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
+        System.out.println("color:" + colorScheme.toString());
         ArrayList<Product> products = (ArrayList<Product>) productRepository.findAll();
+        System.out.println("product is null");
+        StemCoin stemCoin;
+        if (stemCoinRepository.existsById(humanId)){
+            stemCoin = stemCoinRepository.findById(humanId).get(0);
+            System.out.println("stemcoins exists");
+        }
+        else {
+            stemCoin = new StemCoin().setId(roles.getId()).setStemcoins(0);
+            stemCoinRepository.save(stemCoin);
+            System.out.println("stemcoins created");
+        }
+        System.out.println("stemcoins: " + stemCoin.toString());
+        stemCoinRepository.save(stemCoin);
 
+        System.out.println("get products...");
         if (!title.equals("")){
             products = (ArrayList<Product>) productRepository.findByCostLessThanEqualAndTitleContainingIgnoreCase(costBelow, title);
         }
         else {
             products = (ArrayList<Product>) productRepository.findByCostLessThanEqual(costBelow);
         }
+        System.out.println("products:");
+        products.forEach((product)->{
+            System.out.println(product.toString());
+        });
         ArrayList<Product> finalProducts = products;
         for (int i = 0; i < finalProducts.size(); i++) {
+            System.out.println("product:");
+            System.out.println(finalProducts.get(i).toString());
             if (finalProducts.get(i).getCost() < costAbove){
                 finalProducts.remove(i);
+                i = 0;
+                System.out.println("removed");
             }
+            System.out.println("good");
         }
+        System.out.println("work is good");
+
 
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("products", finalProducts);
+        model.addAttribute("coins", stemCoin.getStemcoins());
         model.addAttribute("admin", roles.isAdmin());
     }
 
@@ -466,7 +500,7 @@ public class ModelPreparer {
                     course.setImgSrc("image/just.png");
                 }
 
-                SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                 Date now = new Date();
                 if (course.getNextDate() == null) {
                     course.setNextDate(format.format(course.getDate()));
@@ -490,37 +524,51 @@ public class ModelPreparer {
     }
 
     public static void prepareLesson(TimetableController c) throws ParseException {
+        System.out.println("get repositories");
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         CourseRepository courseRepository = c.getCourseRepository();
         HomeworkRepository homeworkRepository = c.getHomeworkRepository();
         NamesRepository namesRepository = c.getNamesRepository();
         LoginRepository loginRepository = c.getLoginRepository();
+        System.out.println("repositories were got");
 
+        System.out.println("get data");
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
         int courseId = c.getId();
         long courseDate = c.getDate();
+        System.out.println("data was got");
 
+        System.out.println("get user's data");
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
         Course course = courseRepository.findById(courseId).get(0);
-        SimpleDateFormat df = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+        System.out.println(course.toString());
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         System.out.println(course);
         Date date = df.parse(course.getNextDate());
-
-        ArrayList<Homework> homeworks = (ArrayList<Homework>) homeworkRepository.findByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate);
-        Homework homework = (homeworks.isEmpty() ? new Homework().setHomework("Похоже, пока ничего нет!") : homeworks.get(0));
-
+        System.out.println("user's data was got");
+        System.out.println("get homework");
+        Homework homework;
+        if(homeworkRepository.existsByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate)){
+            homework = homeworkRepository.findByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate).get(0);
+        }
+        else {
+            homework = new Homework().setHomework("Кажется, ничего нет!");
+        }
+        System.out.println(homework.toString());
+        System.out.println("find teacher");
         Names teacher = namesRepository.findById(course.getTeacherId()).get(0);
         String teacherName = teacher.getName() + " " + teacher.getSurname();
+        System.out.println("teacher was found");
 
-
+        System.out.println("that's all");
         model.addAttribute("homework", homework.getHomework());
         model.addAttribute("pre", courseDate == 0 ? date.getTime() : courseDate - 604800000);
         model.addAttribute("post", courseDate == 0 ? date.getTime() : courseDate + 604800000);
 //        model.addAttribute("id", homework.getId());
-        model.addAttribute("date", date.getTime());
+        model.addAttribute("date", courseDate == 0 ? date.getTime() : courseDate);
         model.addAttribute("courseId", courseId);
         model.addAttribute("teacherName", teacherName);
         model.addAttribute("teacherImgSrc", loginRepository.findById(teacher.getId()).get(0).getImgSrc());
@@ -563,44 +611,45 @@ public class ModelPreparer {
     }
 
     public static void prepareMarkEditing(TimetableController c){
+        System.out.println("repo");
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         PupilRepository pupilRepository = c.getPupilRepository();
         NamesRepository namesRepository = c.getNamesRepository();
         MarkRepository  markRepository =  c.getMarkRepository();
-
+        System.out.println("repo's good");
+        System.out.println("data");
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
         int courseId = c.getId();
         long date = c.getDate();
-
+        System.out.println("data's good");
+        System.out.println("user's data");
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
         ArrayList<PupilWithNameAndLastMark> pupils = new ArrayList<>();
-        ArrayList<Pupil> pupilIds = roles.isAdmin() || roles.isTeacher() ?
-                (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId) :
-                null;
-        if (!roles.isAdmin() && !roles.isTeacher()){
-            pupilIds = new ArrayList<>();
-            pupilIds.add(pupilRepository.findByCourseIdAndPupilId(courseId, humanId).get(0));
+        System.out.println("search pupils");
+        ArrayList<Pupil> pupilIds;
+        if(roles.isAdmin() || roles.isTeacher()){
+            pupilIds = (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId);
         }
-        if (!pupilIds.isEmpty())
-            pupilIds.forEach((pupil) -> {
-                PupilWithNameAndLastMark modelPupil = new PupilWithNameAndLastMark();
-                Names names = namesRepository.findById(pupil.getPupilId()).get(0);
-                Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).isEmpty() ?
-                        null :
-                        markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).get(0);
-                modelPupil.setId(pupil.getId())
-                        .setCourseId(pupil.getCourseId())
-                        .setPupilId(pupil.getPupilId())
-                        .setName(names.getName())
-                        .setSurname(names.getSurname())
-                        .setMarkA(mark == null ? 0 : mark.getMarkA())
-                        .setMarkB(mark == null ? 0 : mark.getMarkB())
-                        .setMarkC(mark == null ? 0 : mark.getMarkC());
-                pupils.add(modelPupil);
-            });
+        else {
+            pupilIds = (ArrayList<Pupil>) pupilRepository.findByCourseIdAndPupilId(courseId, humanId);
+        }
+        System.out.println("pupils are searched");
+        System.out.println("re-write them");
+        pupilIds.forEach((pupil) -> {
+            PupilWithNameAndLastMark modelPupil = new PupilWithNameAndLastMark();
+            Names names = namesRepository.findById(pupil.getPupilId()).get(0);
+            Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).isEmpty()?
+                    new Mark().setMarkA(0).setMarkB(0).setMarkC(0):
+                    markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).get(0);
+            modelPupil.setId(mark.getId()).setCourseId(courseId).setPupilId(pupil.getPupilId())
+                    .setMarkA(mark.getMarkA()).setMarkB(mark.getMarkB()).setMarkC(mark.getMarkC()).
+                    setName(names.getName()).setSurname(names.getSurname());
+            pupils.add(modelPupil);
+        });
+        System.out.println("re-writing finished");
 
         model.addAttribute("pupil", pupils);
         model.addAttribute("courseId", courseId);

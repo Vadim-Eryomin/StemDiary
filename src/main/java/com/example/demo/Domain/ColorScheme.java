@@ -39,4 +39,13 @@ public class ColorScheme {
         this.bodyColor = bodyColor;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ColorScheme{" +
+                "id=" + id +
+                ", navigationColor=" + navigationColor +
+                ", bodyColor=" + bodyColor +
+                '}';
+    }
 }

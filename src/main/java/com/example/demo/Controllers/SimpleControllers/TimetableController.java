@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 
@@ -58,11 +59,16 @@ public class TimetableController {
             ModelPreparer.prepareShowingTimetable(this);
             return "timetable";
         } else {
+            System.out.println("we're in lesson!");
             //set course id
+            System.out.println("set data");
             this.id = id;
             this.date = date;
+            System.out.println("data was set");
             //prepare lesson page
+            System.out.println("prepare model");
             ModelPreparer.prepareLesson(this);
+            System.out.println("model was prepared");
             return "lesson";
         }
     }
@@ -87,7 +93,8 @@ public class TimetableController {
 
     @PostMapping("/homeworkEdit")
     public String editHomework(@CookieValue(defaultValue = "noname") String humanId, Model model,
-                               @RequestParam int id, @RequestParam long date, @RequestParam String homeworkDef) {
+                               @RequestParam int id, @RequestParam long date, @RequestParam String homeworkDef,
+                               RedirectAttributes attributes) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
 
@@ -98,15 +105,14 @@ public class TimetableController {
         this.id = id;
         this.date = date;
 
-        System.out.println(id);
-        System.out.println(date);
-
-        Homework homework = homeworkRepository.findByCourseId(id).isEmpty() ? new Homework() : homeworkRepository.findByCourseId(id).get(0);
+        Homework homework = homeworkRepository.findByCourseIdAndDate(id, date).isEmpty() ? new Homework() : homeworkRepository.findByCourseIdAndDate(id, date).get(0);
         homework.setHomework(homeworkDef).setDate(date).setCourseId(id);
         homeworkRepository.save(homework);
 
         //prepare model for page
         ModelPreparer.prepareShowingTimetable(this);
+        attributes.addAttribute("date", date);
+        attributes.addAttribute("id", id);
 
         return "redirect:/timetable";
     }
@@ -136,19 +142,20 @@ public class TimetableController {
                             @RequestParam int markC, @RequestParam int pupilId) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
-
+        System.out.println(markA + " " + markB + " " + markC);
         //set data for data preparer
         this.model = model;
         this.humanId = humanId;
         //id is course id
         this.id = courseId;
         this.date = date;
-
-        Mark mark = markRepository.findByCourseIdAndDate(courseId, date).isEmpty() ?
+        System.out.println("set mark");
+        Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupilId).isEmpty() ?
                 new Mark().setCourseId(courseId).setDate(date).setPupilId(pupilId) :
-                markRepository.findByCourseIdAndDate(courseId, date).get(0);
-
+                markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupilId).get(0);
+        System.out.println(mark.toString());
         mark.setMarkA(markA).setMarkB(markB).setMarkC(markC).setTotal((int) ((markA + markB + markC) / 3));
+        System.out.println(mark.toString());
         markRepository.save(mark);
 
         ModelPreparer.prepareMarkEditing(this);

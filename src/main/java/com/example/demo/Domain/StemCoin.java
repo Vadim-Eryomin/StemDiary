@@ -27,4 +27,12 @@ public class StemCoin {
         this.stemcoins = stemcoins;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "StemCoin{" +
+                "id=" + id +
+                ", stemcoins=" + stemcoins +
+                '}';
+    }
 }

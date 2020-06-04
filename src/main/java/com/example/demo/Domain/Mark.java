@@ -90,4 +90,18 @@ public class Mark {
         this.pupilId = pupilId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Mark{" +
+                "id=" + id +
+                ", pupilId=" + pupilId +
+                ", date=" + date +
+                ", courseId=" + courseId +
+                ", markA=" + markA +
+                ", markB=" + markB +
+                ", markC=" + markC +
+                ", total=" + total +
+                '}';
+    }
 }
