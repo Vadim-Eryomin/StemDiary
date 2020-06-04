@@ -2,6 +2,7 @@ package com.example.demo.Controllers.SimpleControllers;
 
 import com.example.demo.Domain.Homework;
 import com.example.demo.Domain.Mark;
+import com.example.demo.Domain.StemCoin;
 import com.example.demo.HelpClasses.ModelPreparer;
 import com.example.demo.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class TimetableController {
     PupilRepository pupilRepository;
     @Autowired
     LoginRepository loginRepository;
+    @Autowired
+    StemCoinRepository stemCoinRepository;
 
     String humanId;
     Model model;
@@ -151,10 +154,12 @@ public class TimetableController {
         this.date = date;
         System.out.println("set mark");
         Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupilId).isEmpty() ?
-                new Mark().setCourseId(courseId).setDate(date).setPupilId(pupilId) :
+                new Mark().setCourseId(courseId).setDate(date).setPupilId(pupilId).setAdd(false) :
                 markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupilId).get(0);
         System.out.println(mark.toString());
-        mark.setMarkA(markA).setMarkB(markB).setMarkC(markC).setTotal((int) ((markA + markB + markC) / 3));
+        mark.setMarkA(markA).setMarkB(markB).setMarkC(markC).setTotal((int) ((markA + markB + markC) / 3)).setAdd(true);
+        StemCoin stemCoin = stemCoinRepository.existsById(pupilId) ? stemCoinRepository.findById(pupilId).get(0).setStemcoins(stemCoinRepository.findById(pupilId).get(0).getStemcoins() + mark.getTotal()) : new StemCoin().setId(pupilId).setStemcoins(mark.getTotal());
+        stemCoinRepository.save(stemCoin);
         System.out.println(mark.toString());
         markRepository.save(mark);
 

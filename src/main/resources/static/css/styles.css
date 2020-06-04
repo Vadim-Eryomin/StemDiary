@@ -73,7 +73,7 @@ input:disabled{
 }
 
 .navigation-bar{
-    width: 50%;
+    width: 75%;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;

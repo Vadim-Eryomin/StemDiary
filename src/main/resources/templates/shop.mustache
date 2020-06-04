@@ -28,13 +28,14 @@
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
 <div id="min-filter"></div>
 <div style="width: 100vw; text-align: center;">
-    <span class="coins"> У вас стемкоинов: {{coins}} </span>
+    <span class="coins"> У вас стемкоинов: <span id="coins">{{coins}}</span> </span>
 </div>
 <div id="alert-container" class="alert-container"></div>
 <div class="shop-container">
     {{#products}}
         <form action="/shop/{{id}}" method="post">
             <div class="card" style="text-align: center; margin: 2%">
+
                 <div class="card-header">
                     {{title}}
                 </div>
@@ -48,7 +49,9 @@
                 <div class="card-footer">
                     <button class="btn btn-outline-success click-check" type="button">{{cost}}$</button>
                     <input type="hidden" value="{{id}}" id="id">
+                    <input type="hidden" id="count" value="{{count}}">
                 </div>
+
             </div>
         </form>
     {{/products}}

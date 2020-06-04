@@ -8,10 +8,8 @@ import javax.persistence.Id;
 @Entity
 public class Status {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-
-    int status;
+    String status;
 
     public int getId() {
         return id;
@@ -22,11 +20,11 @@ public class Status {
         return this;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public Status setStatus(int status) {
+    public Status setStatus(String status) {
         this.status = status;
         return this;
     }

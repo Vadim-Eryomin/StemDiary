@@ -18,6 +18,7 @@ public class Mark {
     int markB;
     int markC;
     int total;
+    boolean isAdd;
 
     public int getId() {
         return id;
@@ -91,6 +92,15 @@ public class Mark {
         return this;
     }
 
+    public boolean isAdd() {
+        return isAdd;
+    }
+
+    public Mark setAdd(boolean add) {
+        isAdd = add;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Mark{" +
@@ -104,4 +114,5 @@ public class Mark {
                 ", total=" + total +
                 '}';
     }
+
 }

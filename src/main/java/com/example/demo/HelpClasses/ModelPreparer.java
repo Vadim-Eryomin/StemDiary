@@ -4,15 +4,14 @@ import com.example.demo.Controllers.AdminControllers.*;
 import com.example.demo.Controllers.CookieControllers.LoginController;
 import com.example.demo.Controllers.SimpleControllers.*;
 import com.example.demo.Domain.*;
+import com.example.demo.Domain.ModelDomain.BasketAdminModelProduct;
 import com.example.demo.Domain.ModelDomain.BasketModelProduct;
 import com.example.demo.Domain.ModelDomain.NamesWithRoles;
 import com.example.demo.Domain.ModelDomain.PupilWithNameAndLastMark;
 import com.example.demo.Repositories.*;
-import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +33,14 @@ public class ModelPreparer {
         int humanId = Integer.parseInt(c.getHumanId());
 
         Account account = loginRepository.findById(humanId).get(0);
-        ColorScheme color = colorRepository.findById(humanId).get(0);
+        ColorScheme color;
+        if (colorRepository.existsById(humanId)){
+            color = colorRepository.findById(humanId).get(0);
+        }
+        else {
+            color = new ColorScheme().setId(account.getId()).setBodyColor(16777215).setNavigationColor(16777215);
+            colorRepository.save(color);
+        }
         Names names = namesRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
 
@@ -158,12 +164,15 @@ public class ModelPreparer {
         ArrayList<Basket> basketProducts = (ArrayList<Basket>) basketRepository.findByCustomerId(humanId);
         ArrayList<BasketModelProduct> basketModelProducts = new ArrayList<>();
 
-        for (int i = 0; i < basketProducts.size(); i++) {
-            BasketModelProduct product = new BasketModelProduct();
-            int status = statusRepository.findById(basketProducts.get(i).getId()).get(0).getStatus();
-            product.setProductName(productRepository.findById(basketProducts.get(i).getProductId()).get(0).getTitle()).setStatus(status == 0 ? "Заказ не обработан" : status == 1 ? "Заказ в работе" : status == 2 ? "Заказ отменен" : status == 3 ? "Заказ готов" : status == 4 ? "Заказ выдан" : "хз");
-            basketModelProducts.add(product);
-        }
+        basketProducts.forEach((basket) -> {
+            Status status = statusRepository.findById(basket.getId()).get(0);
+
+            BasketModelProduct basketModel = new BasketModelProduct();
+            basketModel.setStatus(status.getStatus())
+                    .setProductName(productRepository.findById(basket.getProductId()).get(0).getTitle());
+            basketModelProducts.add(basketModel);
+        });
+
 
         model.addAttribute("products", basketModelProducts);
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
@@ -748,5 +757,80 @@ public class ModelPreparer {
         model.addAttribute("admin", roles.isAdmin());
     }
 
+    public static void prepare(MainAdminStatusController c){
+        ColorRepository colorRepository = c.getColorRepository();
+        RolesRepository rolesRepository = c.getRolesRepository();
+        StatusRepository statusRepository = c.getStatusRepository();
+        BasketRepository basketRepository = c.getBasketRepository();
+        NamesRepository namesRepository = c.getNamesRepository();
+        ProductRepository productRepository = c.getProductRepository();
+
+        Model model = c.getModel();
+        int humanId = Integer.parseInt(c.getHumanId());
+
+        ColorScheme color = colorRepository.findById(humanId).get(0);
+        Roles roles = rolesRepository.findById(humanId).get(0);
+        ArrayList<Basket> baskets = (ArrayList<Basket>) basketRepository.findAll();
+        ArrayList<BasketAdminModelProduct> totalBaskets = new ArrayList<>();
+
+        baskets.forEach((basket) -> {
+            BasketAdminModelProduct product = new BasketAdminModelProduct();
+            Names customer = namesRepository.findById(basket.getCustomerId()).get(0);
+            Product merchandise = productRepository.findById(basket.getProductId()).get(0);
+            Status status;
+            if (statusRepository.existsById(basket.getId())){
+                status = statusRepository.findById(basket.getId()).get(0);
+            }
+            else {
+                status = new Status().setId(basket.getId()).setStatus("Не прочитано");
+                statusRepository.save(status);
+            }
+
+
+            product.setCustomerName(customer.getName() + " " + customer.getSurname())
+                    .setProductName(merchandise.getTitle())
+                    .setStatus(status.getStatus()).setId(basket.getId());
+
+            totalBaskets.add(product);
+        });
+
+
+        model.addAttribute("products", totalBaskets);
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
+
+        model.addAttribute("admin", roles.isAdmin());
+
+    }
+
+    public static void prepareStatusEditing(MainAdminStatusController c){
+        ColorRepository colorRepository = c.getColorRepository();
+        RolesRepository rolesRepository = c.getRolesRepository();
+        StatusRepository statusRepository = c.getStatusRepository();
+        BasketRepository basketRepository = c.getBasketRepository();
+        NamesRepository namesRepository = c.getNamesRepository();
+        ProductRepository productRepository = c.getProductRepository();
+
+        Model model = c.getModel();
+        int humanId = Integer.parseInt(c.getHumanId());
+        int id = c.getId();
+
+        ColorScheme color = colorRepository.findById(humanId).get(0);
+        Roles roles = rolesRepository.findById(humanId).get(0);
+        Status status = statusRepository.findById(id).get(0);
+        Basket basket = basketRepository.findById(id).get(0);
+        Names names = namesRepository.findById(humanId).get(0);
+
+        model.addAttribute("id", id);
+        model.addAttribute("name", names.getName() + " " + names.getSurname());
+        model.addAttribute("status", status.getStatus());
+        model.addAttribute("title", productRepository.findById(basket.getProductId()).get(0).getTitle());
+
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
+
+        model.addAttribute("admin", roles.isAdmin());
+
+    }
 
 }

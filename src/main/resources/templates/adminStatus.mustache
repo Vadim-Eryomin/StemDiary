@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Панель Администратора</title>
+    <title>Статусы товаров</title>
 
     <!-- link all need systems --->
     <link rel="stylesheet" href="css/styles.css">
@@ -27,12 +27,32 @@
 <body style="background-color: #{{bodyColor}}">
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
 <div class="profile-container">
-    <div class="profile admin-container">
-        <a href="/adminAccount"><button class="btn btn-outline-success admin-button">Аккаунты</button></a>
-        <a href="/adminTimetable"><button class="btn btn-outline-success admin-button">Расписание</button></a>
-        <a href="/adminRequests"><button class="btn btn-outline-success admin-button">Запросы</button></a>
-        <a href="/adminShop"><button class="btn btn-outline-success admin-button">Магазин</button></a>
-        <a href="/adminStatus"><button class="btn btn-outline-success admin-button">Статусы покупок</button></a>
+    <div class="profile">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Продукт</th>
+                <th scope="col">Покупатель</th>
+                <th scope="col">Статус</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#products}}
+                <tr>
+                    <th scope="row">{{productName}}</th>
+                    <td>{{customerName}}</td>
+                    <td>{{status}}</td>
+                    <td>
+                        <form action="/adminStatusEdit" method="get">
+                            <input type="hidden" value="{{id}}" name="id" id="id">
+                            <button class="btn btn-outline-primary" type="submit">Редактировать</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/products}}
+            </tbody>
+        </table>
     </div>
 </div>
 

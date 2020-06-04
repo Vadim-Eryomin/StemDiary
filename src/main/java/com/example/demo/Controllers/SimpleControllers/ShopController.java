@@ -1,5 +1,7 @@
 package com.example.demo.Controllers.SimpleControllers;
 
+import com.example.demo.Domain.Basket;
+import com.example.demo.Domain.Status;
 import com.example.demo.HelpClasses.ModelPreparer;
 import com.example.demo.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,10 @@ public class ShopController {
     ColorRepository colorRepository;
     @Autowired
     StemCoinRepository stemCoinRepository;
+    @Autowired
+    BasketRepository basketRepository;
+    @Autowired
+    StatusRepository statusRepository;
     //data for model preparer
     Model model;
     String humanId;
@@ -31,20 +37,29 @@ public class ShopController {
     public String showShop(@CookieValue(defaultValue = "noname") String humanId, Model model,
                            @RequestParam(required = false, defaultValue = "") String title,
                            @RequestParam(required = false, defaultValue = "0") int costAbove,
-                           @RequestParam(required = false, defaultValue = "999999") int costBelow){
+                           @RequestParam(required = false, defaultValue = "999999") int costBelow,
+                           @RequestParam(required = false, defaultValue = "0") int buy) {
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
-        System.out.println("redirect isn't active");
+
         //set data for model preparer
-        System.out.println("start model data preparing");
         this.humanId = humanId;
         this.model = model;
         this.costAbove = costAbove;
         this.costBelow = costBelow;
         this.title = title;
-        System.out.println("end model data preparing");
-        System.out.println("start preparing");
+
         ModelPreparer.prepare(this);
+
+        if (buy != 0) {
+            Basket basket = new Basket();
+            basket.setCustomerId(Integer.parseInt(humanId)).setProductId(buy);
+            basketRepository.save(basket);
+
+            Status status = new Status();
+            status.setId(basket.getId()).setStatus("Не прочитано");
+            statusRepository.save(status);
+        }
 
         return "shop";
     }
