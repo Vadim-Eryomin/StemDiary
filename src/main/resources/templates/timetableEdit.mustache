@@ -42,7 +42,9 @@
             <br>
             <input type="datetime-local" name="time" id="time" value="{{time}}">
             <br>
-
+            <a href="#" id="calendar-a">Не появляется календарь?</a>
+            <br>
+            <div id="calendar"></div>
             <label for="teacherId" class="admin-timetable-label">Выберите учителя</label>
             <br>
             <select name="teacherId" id="teacherId">
@@ -55,14 +57,16 @@
             <label for="pupilId" class="admin-timetable-label">Выберите учеников</label>
             <div id="pupilId">
                 {{#oldPupils}}
-                    <span>{{name}} {{surname}}</span>
-                    <input type="checkbox" value="{{id}}" name="pupilsId" checked>
+                    <div>
+                        <span>{{name}} {{surname}}</span>
+                        <input type="checkbox" value="{{id}}" name="pupilsId" checked>
+                    </div>
                 {{/oldPupils}}
                 {{#pupils}}
-                <div>
-                    <span>{{name}} {{surname}}</span>
-                    <input type="checkbox" value="{{id}}" name="pupilsId">
-                </div>
+                    <div>
+                        <span>{{name}} {{surname}}</span>
+                        <input type="checkbox" value="{{id}}" name="pupilsId">
+                    </div>
                 {{/pupils}}
                 {{^pupils}} {{^oldPupils}} Возможно, Вам стоит добавить учеников? {{/oldPupils}} {{/pupils}}
             </div>
@@ -92,5 +96,7 @@
         }
     );
 </script>
+<!-- script-calendar  --->
+<script src="js/calendar.js"></script>
 </body>
 </html>

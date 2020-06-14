@@ -33,13 +33,26 @@
             <tr>
                 <th scope="col">Название продукта</th>
                 <th scope="col">Статус</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
+            {{#confirmProducts}}
+                <tr>
+                    <form action="/basket" method="post">
+                        <th scope="row">{{productName}}</th>
+                        <td><button type="submit" class="btn btn-outline-success">Подтвердить</button></td>
+                        <td><a href="/basketCancel?id={{id}}" class="btn btn-outline-success">Отменить</a></td>
+                        <input type="hidden" value="{{id}}" name="id">
+                    </form>
+
+                </tr>
+            {{/confirmProducts}}
             {{#products}}
                 <tr>
                     <th scope="row">{{productName}}</th>
                     <td>{{status}}</td>
+                    <td></td>
                 </tr>
             {{/products}}
             </tbody>

@@ -155,6 +155,7 @@ public class ModelPreparer {
         ColorRepository colorRepository = c.getColorRepository();
         StatusRepository statusRepository = c.getStatusRepository();
         BasketRepository basketRepository = c.getBasketRepository();
+        UnconfirmedBasketRepository unconfirmedBasketRepository = c.getUnconfirmedBasketRepository();
 
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
@@ -162,7 +163,9 @@ public class ModelPreparer {
         Roles roles = rolesRepository.findById(humanId).get(0);
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         ArrayList<Basket> basketProducts = (ArrayList<Basket>) basketRepository.findByCustomerId(humanId);
+        ArrayList<UnconfirmedBasket> unBaskets = (ArrayList<UnconfirmedBasket>) unconfirmedBasketRepository.findByCustomerId(humanId);
         ArrayList<BasketModelProduct> basketModelProducts = new ArrayList<>();
+        ArrayList<BasketModelProduct> unBasketModelProducts = new ArrayList<>();
 
         basketProducts.forEach((basket) -> {
             Status status = statusRepository.findById(basket.getId()).get(0);
@@ -172,8 +175,14 @@ public class ModelPreparer {
                     .setProductName(productRepository.findById(basket.getProductId()).get(0).getTitle());
             basketModelProducts.add(basketModel);
         });
+        unBaskets.forEach((unBasket) -> {
+            BasketModelProduct basketModel = new BasketModelProduct();
+            basketModel.setId(unBasket.getId())
+                    .setProductName(productRepository.findById(unBasket.getProductId()).get(0).getTitle());
+            unBasketModelProducts.add(basketModel);
+        });
 
-
+        model.addAttribute("confirmProducts", unBasketModelProducts);
         model.addAttribute("products", basketModelProducts);
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
@@ -579,6 +588,7 @@ public class ModelPreparer {
 //        model.addAttribute("id", homework.getId());
         model.addAttribute("date", courseDate == 0 ? date.getTime() : courseDate);
         model.addAttribute("courseId", courseId);
+        model.addAttribute("courseName", course.getName());
         model.addAttribute("teacherName", teacherName);
         model.addAttribute("teacherImgSrc", loginRepository.findById(teacher.getId()).get(0).getImgSrc());
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));

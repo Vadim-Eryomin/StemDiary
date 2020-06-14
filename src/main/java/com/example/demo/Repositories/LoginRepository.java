@@ -8,8 +8,11 @@ import java.util.List;
 
 public interface LoginRepository extends CrudRepository<Account, Integer> {
     List<Account> findByLoginAndPassword(String login, String password);
+    List<Account> findByLogin(String login);
     List<Account> findById(int id);
 
     @Query("SELECT coalesce(max(a.id), 0) FROM Account a")
     Long getMaxId();
+
+
 }

@@ -1,7 +1,9 @@
 package com.example.demo.Controllers.SimpleControllers;
 
 import com.example.demo.Domain.Basket;
+import com.example.demo.Domain.Product;
 import com.example.demo.Domain.Status;
+import com.example.demo.Domain.UnconfirmedBasket;
 import com.example.demo.HelpClasses.ModelPreparer;
 import com.example.demo.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ShopController {
     BasketRepository basketRepository;
     @Autowired
     StatusRepository statusRepository;
+    @Autowired
+    UnconfirmedBasketRepository unconfirmedBasketRepository;
     //data for model preparer
     Model model;
     String humanId;
@@ -52,13 +56,12 @@ public class ShopController {
         ModelPreparer.prepare(this);
 
         if (buy != 0) {
-            Basket basket = new Basket();
+            UnconfirmedBasket basket = new UnconfirmedBasket();
             basket.setCustomerId(Integer.parseInt(humanId)).setProductId(buy);
-            basketRepository.save(basket);
-
-            Status status = new Status();
-            status.setId(basket.getId()).setStatus("Не прочитано");
-            statusRepository.save(status);
+            unconfirmedBasketRepository.save(basket);
+            Product product = productRepository.findById(basket.getProductId()).get(0);
+            product.setCount(product.getCount()-1);
+            productRepository.save(product);
         }
 
         return "shop";
