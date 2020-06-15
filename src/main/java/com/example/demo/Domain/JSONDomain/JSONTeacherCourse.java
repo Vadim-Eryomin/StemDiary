@@ -1,7 +1,8 @@
 package com.example.demo.Domain.JSONDomain;
 
-public class JSONCourse {
-    int pupilId;
+public class JSONTeacherCourse {
+    Object[] pupilId;
+    Object[] pupilName;
     int teacherId;
     String teacherName;
     String avatarUrl;
@@ -13,11 +14,11 @@ public class JSONCourse {
     String postDate;
     String courseName;
 
-    public int getPupilId() {
+    public Object[] getPupilId() {
         return pupilId;
     }
 
-    public JSONCourse setPupilId(int pupilId) {
+    public JSONTeacherCourse setPupilId(Object[] pupilId) {
         this.pupilId = pupilId;
         return this;
     }
@@ -26,7 +27,7 @@ public class JSONCourse {
         return teacherId;
     }
 
-    public JSONCourse setTeacherId(int teacherId) {
+    public JSONTeacherCourse setTeacherId(int teacherId) {
         this.teacherId = teacherId;
         return this;
     }
@@ -35,7 +36,7 @@ public class JSONCourse {
         return teacherName;
     }
 
-    public JSONCourse setTeacherName(String teacherName) {
+    public JSONTeacherCourse setTeacherName(String teacherName) {
         this.teacherName = teacherName;
         return this;
     }
@@ -44,7 +45,7 @@ public class JSONCourse {
         return avatarUrl;
     }
 
-    public JSONCourse setAvatarUrl(String avatarUrl) {
+    public JSONTeacherCourse setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
         return this;
     }
@@ -53,7 +54,7 @@ public class JSONCourse {
         return preHomework;
     }
 
-    public JSONCourse setPreHomework(String preHomework) {
+    public JSONTeacherCourse setPreHomework(String preHomework) {
         this.preHomework = preHomework;
         return this;
     }
@@ -62,7 +63,7 @@ public class JSONCourse {
         return homework;
     }
 
-    public JSONCourse setHomework(String homework) {
+    public JSONTeacherCourse setHomework(String homework) {
         this.homework = homework;
         return this;
     }
@@ -71,7 +72,7 @@ public class JSONCourse {
         return postHomework;
     }
 
-    public JSONCourse setPostHomework(String postHomework) {
+    public JSONTeacherCourse setPostHomework(String postHomework) {
         this.postHomework = postHomework;
         return this;
     }
@@ -80,7 +81,7 @@ public class JSONCourse {
         return preDate;
     }
 
-    public JSONCourse setPreDate(String preDate) {
+    public JSONTeacherCourse setPreDate(String preDate) {
         this.preDate = preDate;
         return this;
     }
@@ -89,7 +90,7 @@ public class JSONCourse {
         return date;
     }
 
-    public JSONCourse setDate(String date) {
+    public JSONTeacherCourse setDate(String date) {
         this.date = date;
         return this;
     }
@@ -98,8 +99,17 @@ public class JSONCourse {
         return postDate;
     }
 
-    public JSONCourse setPostDate(String postDate) {
+    public JSONTeacherCourse setPostDate(String postDate) {
         this.postDate = postDate;
+        return this;
+    }
+
+    public Object[] getPupilName() {
+        return pupilName;
+    }
+
+    public JSONTeacherCourse setPupilName(Object[] pupilName) {
+        this.pupilName = pupilName;
         return this;
     }
 
@@ -107,7 +117,7 @@ public class JSONCourse {
         return courseName;
     }
 
-    public JSONCourse setCourseName(String courseName) {
+    public JSONTeacherCourse setCourseName(String courseName) {
         this.courseName = courseName;
         return this;
     }
