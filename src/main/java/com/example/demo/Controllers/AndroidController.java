@@ -513,6 +513,44 @@ public class AndroidController {
         return "androidData";
     }
 
+    @GetMapping("/addCourse")
+    public String createCourse(Model model,
+                               @RequestParam String login,
+                               @RequestParam String password,
+                               @RequestParam String name,
+                               @RequestParam long date,
+                               @RequestParam String[] pupils,
+                               @RequestParam String teacher,
+                               @RequestParam String imgSrc){
+        if (!loginRepository.findByLoginAndPassword(login, password).isEmpty()){
+            Course course = new Course();
+
+            Account teacherAccount = loginRepository.findByLogin(teacher).get(0);
+            Names teacherName = namesRepository.findById(teacherAccount.getId()).get(0);
+
+            course.setTeacherId(teacherAccount.getId())
+                    .setDate(date)
+                    .setImgSrc(imgSrc)
+                    .setName(name)
+                    .setTeacherName(teacherName.getName() + " " + teacherName.getSurname())
+                    .setNextDate(new SimpleDateFormat("dd.MM.yyyy hh:mm").format(new Date(date)));
+            courseRepository.save(course);
+
+            for (String pupilLogin :
+                    pupils) {
+                Pupil pupil = new Pupil();
+                pupil.setPupilId(loginRepository.findByLogin(pupilLogin).get(0).getId())
+                        .setCourseId(course.getId());
+                pupilRepository.save(pupil);
+            }
+            model.addAttribute("data", "true");
+        }
+        else {
+            model.addAttribute("data", "false");
+        }
+        return "androidData";
+    }
+
 
     public static long convertDate(String date) throws ParseException {
         //dd.MM.YYYY HH:mm
