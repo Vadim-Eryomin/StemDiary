@@ -513,7 +513,7 @@ public class AndroidController {
         return "androidData";
     }
 
-    @GetMapping("/addCourse")
+    @PostMapping("/addCourse")
     public String createCourse(Model model,
                                @RequestParam String login,
                                @RequestParam String password,
