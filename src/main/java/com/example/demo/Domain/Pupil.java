@@ -39,4 +39,13 @@ public class Pupil {
         this.pupilId = pupilId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Pupil{" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", pupilId=" + pupilId +
+                '}';
+    }
 }

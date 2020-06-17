@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Расписание</title>
+    <title>Профиль</title>
 
     <!-- link all need systems --->
     <link rel="stylesheet" href="css/styles.css">
@@ -26,34 +26,22 @@
 </head>
 <body style="background-color: #{{bodyColor}}">
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
-<div class="timetable-container" style="margin-left: auto; margin-right: auto;">
-    {{#course}}
-        <div class="card card-dop" style="margin: 10px; text-align: center;">
-            <div class="card-header">
-                {{name}}
-            </div>
-            <div class="card-body" style="min-height: 220px;">
-                <img src="{{imgSrc}}" class="timetable-image" style="margin-left: auto; margin-right: auto;">
-                <span>
-                    {{nextDate}} <br> Ведёт: {{teacherName}}
-                </span>
+<script>
+    //https://oauth.vk.com/authorize?client_id=7512626&display=page&redirect_uri=http://18.191.156.108/getCode&scope=friends&response_type=code&v=5.110
+    //if(document.location.href.split("/")[3].split("?")[0] === "getCode")
+    //    document.location.replace("https://oauth.vk.com/access_token?client_id=7512626&client_secret=tZvRCSIitiIJCeCA4MLM&redirect_uri=http://18.191.156.108/getCode&code=" + window.location.href.split("?")[1].split("=")[1]);
+    //else{
+    //    let token = JSON.parse(document.body.innerText)['access_token'];
+    //    let id = JSON.parse(document.body.innerText)['user_id'];
+    //    document.location.replace("http://18.191.156.108/auth?token="+token+"&id="+id);
+    //}
+</script>
 
-            </div>
-            <div class="card-footer">
-                <a href="/timetable?id={{id}}" class="btn btn-outline-success">Перейти</a>
-            </div>
-        </div>
-    {{/course}}
-    {{^course}}
-        Кажется, ничего нет!
-    {{/course}}
-</div>
-
+<!-- script for password edit --->
+<script src="js/password.js"></script>
 <!-- Navigation panel script--->
 <script src="js/navigation.js"></script>
 <!-- script for auto resizing images--->
 <script src="js/imageEditor.js"></script>
-<!-- script for set width and height for all cards--->
-<script src="js/cardResizer.js"></script>
 </body>
 </html>

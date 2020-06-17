@@ -42,14 +42,19 @@ public class MainTimetableAdminController {
 
     @GetMapping("/adminTimetable")
     public String showTimetable(@CookieValue(defaultValue = "noname") String humanId, Model model) {
+        System.out.println("search");
         //if we don't see login cookie redirect to login page
         if (humanId.equals("noname")) return "redirect:/login";
         //set data for model preparer
+        System.out.println("Hello!");
+        System.out.println("set data...");
         this.humanId = humanId;
         this.model = model;
-
+        System.out.println("data was set");
+        System.out.println("start preparing...");
         ModelPreparer.prepare(this);
-
+        System.out.println("model was prepared");
+        System.out.println("goodbye!");
         return "adminTimetable";
     }
 

@@ -51,7 +51,8 @@ public class AndroidController {
     public String login(Model model,
                         @RequestParam String login,
                         @RequestParam String password) {
-        Account account = loginRepository.findByLoginAndPassword(login, password).get(0);
+        Account account = loginRepository.findByLoginAndPassword(login, password).isEmpty() ?
+                null : loginRepository.findByLoginAndPassword(login, password).get(0);
         if (account != null) {
             Names names = namesRepository.findById(account.getId()).get(0);
             Roles roles = rolesRepository.findById(account.getId()).get(0);
@@ -149,6 +150,7 @@ public class AndroidController {
                 courseObject.put("pupilId", courseData.getPupilId());
                 courseObject.put("teacherId", courseData.getTeacherId());
                 courseObject.put("teacherName", courseData.getTeacherName());
+                courseObject.put("teacherAvatarUrl", account.getImgSrc());
                 courseObject.put("avatarUrl", courseData.getAvatarUrl());
                 courseObject.put("preHomework", courseData.getPreHomework());
                 courseObject.put("homework", courseData.getHomework());
@@ -180,6 +182,7 @@ public class AndroidController {
                 JSONCourse courseData = new JSONCourse();
                 Course course = courseRepository.findById(pupil.getCourseId()).get(0);
                 Names teacher = namesRepository.findById(course.getTeacherId()).get(0);
+                Account teacherAccount = loginRepository.findById(course.getTeacherId()).get(0);
 
                 courseData.setPupilId(account.getId());
                 courseData.setTeacherId(teacher.getId());
@@ -228,6 +231,7 @@ public class AndroidController {
                 courseObject.put("pupilId", courseData.getPupilId());
                 courseObject.put("teacherId", courseData.getTeacherId());
                 courseObject.put("teacherName", courseData.getTeacherName());
+                courseObject.put("teacherAvatarUrl", teacherAccount.getImgSrc());
                 courseObject.put("avatarUrl", courseData.getAvatarUrl());
                 courseObject.put("preHomework", courseData.getPreHomework());
                 courseObject.put("homework", courseData.getHomework());

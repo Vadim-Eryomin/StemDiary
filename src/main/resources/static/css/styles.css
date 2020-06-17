@@ -246,7 +246,7 @@ input:disabled{
 .shop-container{
     margin-left: 10px;
     display: flex;
-    justify-content: left;
+    justify-content: centers;
     flex-flow: row wrap;
 }
 

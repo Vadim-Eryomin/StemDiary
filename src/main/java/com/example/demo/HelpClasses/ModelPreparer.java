@@ -14,10 +14,8 @@ import org.springframework.ui.Model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 @Controller
@@ -34,10 +32,9 @@ public class ModelPreparer {
 
         Account account = loginRepository.findById(humanId).get(0);
         ColorScheme color;
-        if (colorRepository.existsById(humanId)){
+        if (colorRepository.existsById(humanId)) {
             color = colorRepository.findById(humanId).get(0);
-        }
-        else {
+        } else {
             color = new ColorScheme().setId(account.getId()).setBodyColor(16777215).setNavigationColor(16777215);
             colorRepository.save(color);
         }
@@ -105,11 +102,10 @@ public class ModelPreparer {
         ArrayList<Product> products = (ArrayList<Product>) productRepository.findAll();
         System.out.println("product is null");
         StemCoin stemCoin;
-        if (stemCoinRepository.existsById(humanId)){
+        if (stemCoinRepository.existsById(humanId)) {
             stemCoin = stemCoinRepository.findById(humanId).get(0);
             System.out.println("stemcoins exists");
-        }
-        else {
+        } else {
             stemCoin = new StemCoin().setId(roles.getId()).setStemcoins(0);
             stemCoinRepository.save(stemCoin);
             System.out.println("stemcoins created");
@@ -118,21 +114,20 @@ public class ModelPreparer {
         stemCoinRepository.save(stemCoin);
 
         System.out.println("get products...");
-        if (!title.equals("")){
+        if (!title.equals("")) {
             products = (ArrayList<Product>) productRepository.findByCostLessThanEqualAndTitleContainingIgnoreCase(costBelow, title);
-        }
-        else {
+        } else {
             products = (ArrayList<Product>) productRepository.findByCostLessThanEqual(costBelow);
         }
         System.out.println("products:");
-        products.forEach((product)->{
+        products.forEach((product) -> {
             System.out.println(product.toString());
         });
         ArrayList<Product> finalProducts = products;
         for (int i = 0; i < finalProducts.size(); i++) {
             System.out.println("product:");
             System.out.println(finalProducts.get(i).toString());
-            if (finalProducts.get(i).getCost() < costAbove){
+            if (finalProducts.get(i).getCost() < costAbove) {
                 finalProducts.remove(i);
                 i = 0;
                 System.out.println("removed");
@@ -190,48 +185,52 @@ public class ModelPreparer {
     }
 
     public static void prepare(MainTimetableAdminController c) {
+        System.out.println("find repos...");
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         CourseRepository courseRepository = c.getCourseRepository();
         NamesRepository namesRepository = c.getNamesRepository();
-
+        System.out.println("repos were found");
+        System.out.println("find data");
         int humanId = Integer.parseInt(c.getHumanId());
         Model model = c.getModel();
-
+        System.out.println("data was found");
+        System.out.println("find user data");
         ColorScheme colorScheme = colorRepository.findById(humanId).get(0);
         Roles roles = rolesRepository.findById(humanId).get(0);
         ArrayList<Course> courses = (ArrayList<Course>) courseRepository.findAll();
-
+        System.out.println("user data was found");
+        System.out.println("edit courses");
+        AtomicInteger i = new AtomicInteger(1);
         courses.forEach((course) -> {
+            System.out.println("course:" + i.getAndIncrement());
             Names teacherNames = namesRepository.findById(course.getTeacherId()).get(0);
             course.setTeacherName(teacherNames.getName() + " " + teacherNames.getSurname());
-
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+            System.out.println("find teacher!");
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            System.out.println("set formatter");
             Date now = new Date();
             if (course.getNextDate() == null) {
                 course.setNextDate(format.format(course.getDate()));
             }
+            System.out.println("set next date");
             //set the nearest date of next lesson
-            while (true) {
-                try {
-                    if (!(now.getTime() < format.parse(course.getNextDate()).getTime())) break;
-                    else {
-                        GregorianCalendar calendar = new GregorianCalendar();
-                        calendar.setTime(format.parse(course.getNextDate()));
-                        calendar.add(Calendar.DAY_OF_MONTH, 7);
-                        course.setNextDate(format.format(calendar.getTime()));
-                        System.out.println(course.getNextDate());
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            try {
+                while (now.after(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(course.getNextDate()))) {
+                    // TODO: 20.05.2020 оптимизировать!!! добавляет неделю, но выглядит жутковато)
+                    course.setNextDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(course.getNextDate()).getTime() + 604800000)));
                 }
+            } catch (Exception ignored) {
             }
+            System.out.println("course was edited");
         });
 
+        System.out.println("prepare model");
         model.addAttribute("courses", courses);
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
+        System.out.println("all's right");
     }
 
     public static void prepare(MainShopAdminController c) {
@@ -280,7 +279,7 @@ public class ModelPreparer {
         model.addAttribute("names", namesWithRoles);
         model.addAttribute("navColor", ColorTranslator.translateColor(colorScheme.getNavigationColor()));
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
-        model.addAttribute("roleAdmin",  myRole.isAdmin());
+        model.addAttribute("roleAdmin", myRole.isAdmin());
     }
 
     public static void prepareAccountCreation(MainAccountsAdminController c) {
@@ -363,7 +362,7 @@ public class ModelPreparer {
             public void accept(Roles roles) {
                 if (roles.isTeacher())
                     teachers.add(namesRepository.findById(roles.getId()).get(0));
-                else if (!roles.isAdmin()){
+                else if (!roles.isAdmin()) {
                     pupils.add(namesRepository.findById(roles.getId()).get(0));
                 }
             }
@@ -400,7 +399,7 @@ public class ModelPreparer {
             public void accept(Roles roles) {
                 if (roles.isTeacher())
                     teachers.add(namesRepository.findById(roles.getId()).get(0));
-                else if (!roles.isAdmin()){
+                else if (!roles.isAdmin()) {
                     pupils.add(namesRepository.findById(roles.getId()).get(0));
                 }
             }
@@ -408,25 +407,30 @@ public class ModelPreparer {
 
         ArrayList<Pupil> oldPupils = (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId);
         ArrayList<Names> oldPupilsNames = new ArrayList<>();
-
-        for (Pupil old :
-                oldPupils) {
-            if (pupils.isEmpty())
-                break;
-            for (int i = pupils.size() - 1; i >= 0; i--) {
-                if (old.getPupilId() == pupils.get(i).getId()) {
-                    pupils.remove(i);
+        if (!oldPupils.isEmpty())
+            for (Pupil old :
+                    oldPupils) {
+                if (pupils.isEmpty())
+                    break;
+                for (int i = pupils.size() - 1; i >= 0; i--) {
+                    if (old.getPupilId() == pupils.get(i).getId()) {
+                        pupils.remove(i);
+                    }
                 }
             }
-        }
-
-        for (Pupil p :
-                oldPupils) {
-            oldPupilsNames.add(namesRepository.findById(p.getPupilId()).get(0));
-        }
+        System.out.println(Arrays.toString(oldPupils.toArray()));
+        if (!oldPupils.isEmpty())
+            oldPupils.forEach((pupil) -> {
+                System.out.println(pupil.toString());
+                if (namesRepository.existsById(pupil.getPupilId())) {
+                    Names names = namesRepository.findById(pupil.getPupilId()).isEmpty() ? null : namesRepository.findById(pupil.getPupilId()).get(0);
+                    if (names != null)
+                        oldPupilsNames.add(names);
+                }
+            });
 
         // just time in text
-        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm").format(course.getDate());
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(course.getDate());
         //convert to Chrome type
         time = time.split(" ")[0] + "T" + time.split(" ")[1];
 
@@ -504,7 +508,7 @@ public class ModelPreparer {
         } else {
             ArrayList<Pupil> IAmAPupil = (ArrayList<Pupil>) pupilRepository.findByPupilId(humanId);
             courses = new ArrayList<>();
-            IAmAPupil.forEach((pupil)->{
+            IAmAPupil.forEach((pupil) -> {
                 courses.add(courseRepository.findById(pupil.getCourseId()).get(0));
             });
         }
@@ -514,7 +518,7 @@ public class ModelPreparer {
                 Names teacherNames = namesRepository.findById(course.getTeacherId()).get(0);
                 course.setTeacherName(teacherNames.getName() + " " + teacherNames.getSurname());
 
-                if(course.getImgSrc() == null || course.getImgSrc().equals("")){
+                if (course.getImgSrc() == null || course.getImgSrc().equals("")) {
                     course.setImgSrc("image/just.png");
                 }
 
@@ -529,7 +533,8 @@ public class ModelPreparer {
                         // TODO: 20.05.2020 оптимизировать!!! добавляет неделю, но выглядит жутковато)
                         course.setNextDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(course.getNextDate()).getTime() + 604800000)));
                     }
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
 
                 courseRepository.save(course);
 
@@ -569,10 +574,9 @@ public class ModelPreparer {
         System.out.println("user's data was got");
         System.out.println("get homework");
         Homework homework;
-        if(homeworkRepository.existsByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate)){
+        if (homeworkRepository.existsByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate)) {
             homework = homeworkRepository.findByCourseIdAndDate(courseId, courseDate == 0 ? date.getTime() : courseDate).get(0);
-        }
-        else {
+        } else {
             homework = new Homework().setHomework("Кажется, ничего нет!");
         }
         System.out.println(homework.toString());
@@ -629,13 +633,13 @@ public class ModelPreparer {
         model.addAttribute("teacher", roles.isTeacher());
     }
 
-    public static void prepareMarkEditing(TimetableController c){
+    public static void prepareMarkEditing(TimetableController c) {
         System.out.println("repo");
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         PupilRepository pupilRepository = c.getPupilRepository();
         NamesRepository namesRepository = c.getNamesRepository();
-        MarkRepository  markRepository =  c.getMarkRepository();
+        MarkRepository markRepository = c.getMarkRepository();
         System.out.println("repo's good");
         System.out.println("data");
         int humanId = Integer.parseInt(c.getHumanId());
@@ -649,10 +653,9 @@ public class ModelPreparer {
         ArrayList<PupilWithNameAndLastMark> pupils = new ArrayList<>();
         System.out.println("search pupils");
         ArrayList<Pupil> pupilIds;
-        if(roles.isAdmin() || roles.isTeacher()){
+        if (roles.isAdmin() || roles.isTeacher()) {
             pupilIds = (ArrayList<Pupil>) pupilRepository.findByCourseId(courseId);
-        }
-        else {
+        } else {
             pupilIds = (ArrayList<Pupil>) pupilRepository.findByCourseIdAndPupilId(courseId, humanId);
         }
         System.out.println("pupils are searched");
@@ -660,8 +663,8 @@ public class ModelPreparer {
         pupilIds.forEach((pupil) -> {
             PupilWithNameAndLastMark modelPupil = new PupilWithNameAndLastMark();
             Names names = namesRepository.findById(pupil.getPupilId()).get(0);
-            Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).isEmpty()?
-                    new Mark().setMarkA(0).setMarkB(0).setMarkC(0):
+            Mark mark = markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).isEmpty() ?
+                    new Mark().setMarkA(0).setMarkB(0).setMarkC(0) :
                     markRepository.findByCourseIdAndDateAndPupilId(courseId, date, pupil.getPupilId()).get(0);
             modelPupil.setId(mark.getId()).setCourseId(courseId).setPupilId(pupil.getPupilId())
                     .setMarkA(mark.getMarkA()).setMarkB(mark.getMarkB()).setMarkC(mark.getMarkC()).
@@ -678,7 +681,8 @@ public class ModelPreparer {
         model.addAttribute("admin", roles.isAdmin());
         model.addAttribute("teacher", roles.isTeacher());
     }
-    public static void prepare(MainRegisterRequestAdminController c){
+
+    public static void prepare(MainRegisterRequestAdminController c) {
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         NamesRepository namesRepository = c.getNamesRepository();
@@ -696,7 +700,8 @@ public class ModelPreparer {
         model.addAttribute("bodyColor", ColorTranslator.translateColor(colorScheme.getBodyColor()));
         model.addAttribute("admin", roles.isAdmin());
     }
-    public static void prepareRequestEditing(MainRegisterRequestAdminController c){
+
+    public static void prepareRequestEditing(MainRegisterRequestAdminController c) {
         RolesRepository rolesRepository = c.getRolesRepository();
         ColorRepository colorRepository = c.getColorRepository();
         NamesRepository namesRepository = c.getNamesRepository();
@@ -716,7 +721,7 @@ public class ModelPreparer {
         model.addAttribute("admin", roles.isAdmin());
     }
 
-    public static void prepare(ErrorController c){
+    public static void prepare(ErrorController c) {
         LoginRepository loginRepository = c.getLoginRepository();
         ColorRepository colorRepository = c.getColorRepository();
         NamesRepository namesRepository = c.getNamesRepository();
@@ -741,7 +746,7 @@ public class ModelPreparer {
 
     }
 
-    public static void prepare(LoginController c){
+    public static void prepare(LoginController c) {
         CourseRepository courseRepository = c.getCourseRepository();
 
         Model model = c.getModel();
@@ -751,7 +756,7 @@ public class ModelPreparer {
         model.addAttribute("courses", courses);
     }
 
-    public static void prepare(FilterController c){
+    public static void prepare(FilterController c) {
         ColorRepository colorRepository = c.getColorRepository();
         RolesRepository rolesRepository = c.getRolesRepository();
 
@@ -767,7 +772,7 @@ public class ModelPreparer {
         model.addAttribute("admin", roles.isAdmin());
     }
 
-    public static void prepare(MainAdminStatusController c){
+    public static void prepare(MainAdminStatusController c) {
         ColorRepository colorRepository = c.getColorRepository();
         RolesRepository rolesRepository = c.getRolesRepository();
         StatusRepository statusRepository = c.getStatusRepository();
@@ -788,10 +793,9 @@ public class ModelPreparer {
             Names customer = namesRepository.findById(basket.getCustomerId()).get(0);
             Product merchandise = productRepository.findById(basket.getProductId()).get(0);
             Status status;
-            if (statusRepository.existsById(basket.getId())){
+            if (statusRepository.existsById(basket.getId())) {
                 status = statusRepository.findById(basket.getId()).get(0);
-            }
-            else {
+            } else {
                 status = new Status().setId(basket.getId()).setStatus("Не прочитано");
                 statusRepository.save(status);
             }
@@ -813,7 +817,7 @@ public class ModelPreparer {
 
     }
 
-    public static void prepareStatusEditing(MainAdminStatusController c){
+    public static void prepareStatusEditing(MainAdminStatusController c) {
         ColorRepository colorRepository = c.getColorRepository();
         RolesRepository rolesRepository = c.getRolesRepository();
         StatusRepository statusRepository = c.getStatusRepository();
@@ -841,6 +845,22 @@ public class ModelPreparer {
 
         model.addAttribute("admin", roles.isAdmin());
 
+    }
+
+    public static void prepare(FriendsController c) {
+        ColorRepository colorRepository = c.getColorRepository();
+        RolesRepository rolesRepository = c.getRolesRepository();
+
+        Model model = c.getModel();
+        int humanId = Integer.parseInt(c.getHumanId());
+
+        ColorScheme color = colorRepository.findById(humanId).get(0);
+        Roles roles = rolesRepository.findById(humanId).get(0);
+
+        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
+        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
+
+        model.addAttribute("admin", roles.isAdmin());
     }
 
 }

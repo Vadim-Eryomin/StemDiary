@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Расписание</title>
+    <title>Профиль</title>
 
     <!-- link all need systems --->
     <link rel="stylesheet" href="css/styles.css">
@@ -26,34 +26,19 @@
 </head>
 <body style="background-color: #{{bodyColor}}">
 <div admin="{{admin}}" color="{{navColor}}" id="root"></div>
-<div class="timetable-container" style="margin-left: auto; margin-right: auto;">
-    {{#course}}
-        <div class="card card-dop" style="margin: 10px; text-align: center;">
-            <div class="card-header">
-                {{name}}
-            </div>
-            <div class="card-body" style="min-height: 220px;">
-                <img src="{{imgSrc}}" class="timetable-image" style="margin-left: auto; margin-right: auto;">
-                <span>
-                    {{nextDate}} <br> Ведёт: {{teacherName}}
-                </span>
+<script>
 
-            </div>
-            <div class="card-footer">
-                <a href="/timetable?id={{id}}" class="btn btn-outline-success">Перейти</a>
-            </div>
-        </div>
-    {{/course}}
-    {{^course}}
-        Кажется, ничего нет!
-    {{/course}}
-</div>
+  let token = JSON.parse(document.body.innerText)['access_token'];
+  let id = JSON.parse(document.body.innerText)['user_id'];
+  document.location.replace("http://18.191.156.108/auth?token="+token+"&id="+id);
 
+</script>
+
+<!-- script for password edit --->
+<script src="js/password.js"></script>
 <!-- Navigation panel script--->
 <script src="js/navigation.js"></script>
 <!-- script for auto resizing images--->
 <script src="js/imageEditor.js"></script>
-<!-- script for set width and height for all cards--->
-<script src="js/cardResizer.js"></script>
 </body>
 </html>
