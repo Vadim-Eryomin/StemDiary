@@ -13,7 +13,7 @@ let animationDelay = 200;
 let windowWidth = document.body.offsetWidth;
 
 let styleNavigation = {backgroundColor: '#' + navigationColor };
-if(document.body.offsetWidth >= 800){
+if(document.body.offsetWidth >= 1000){
     h = React.createElement('div', {'key': idCounter++, 'className': 'navigation', 'style': styleNavigation}, [
         React.createElement('div', {'key': idCounter++, 'className': 'navigation-bar', 'style': styleNavigation},
             [
@@ -25,6 +25,7 @@ if(document.body.offsetWidth >= 800){
                 React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"navigation-text"}, 'Магазин'),
                 React.createElement('a', {'key': idCounter++, 'href': '/timetable', 'className':"navigation-text"}, 'Расписание'),
                 React.createElement('a', {'key': idCounter++, 'href': '/basket', 'className':"navigation-text"}, 'Корзина'),
+                React.createElement('a', {'key': idCounter++, 'href': '/getCode', 'className':"navigation-text"}, 'ВК'),
                 admin? React.createElement('a', {'key': idCounter++, 'href': '/admin', 'className':"navigation-text"}, 'Панель Администратора') : null,
                 React.createElement('a', {'key': idCounter++, 'href': '/login', 'className':"navigation-text"}, 'Выйти'),
             ])
@@ -45,6 +46,7 @@ else{
                 React.createElement('a', {'key': idCounter++, 'href': '/shop', 'className':"min-navigation-text"}, 'Магазин'),
                 React.createElement('a', {'key': idCounter++, 'href': '/timetable', 'className':"min-navigation-text"}, 'Расписание'),
                 React.createElement('a', {'key': idCounter++, 'href': '/basket', 'className':"min-navigation-text"}, 'Корзина'),
+                React.createElement('a', {'key': idCounter++, 'href': '/getCode', 'className':"min-navigation-text"}, 'ВК'),
                 admin? React.createElement('a', {'key': idCounter++, 'href': '/admin', 'className':"min-navigation-text"}, 'Панель Администратора') : null,
                 React.createElement('a', {'key': idCounter++, 'href': '/login', 'className':"min-navigation-text"}, 'Выйти'),
             ])

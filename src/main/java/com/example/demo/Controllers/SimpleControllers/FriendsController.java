@@ -2,9 +2,11 @@ package com.example.demo.Controllers.SimpleControllers;
 
 import com.example.demo.Domain.OtherDomain.VKAuthRequest;
 import com.example.demo.Domain.OtherDomain.VkUserData;
+import com.example.demo.Domain.VkLink;
 import com.example.demo.HelpClasses.ModelPreparer;
 import com.example.demo.Repositories.ColorRepository;
 import com.example.demo.Repositories.RolesRepository;
+import com.example.demo.Repositories.VkLinkRepository;
 import com.vk.api.sdk.actions.Auth;
 import com.vk.api.sdk.actions.OAuth;
 import com.vk.api.sdk.client.VkApiClient;
@@ -42,6 +44,8 @@ public class FriendsController {
     ColorRepository colorRepository;
     @Autowired
     RolesRepository rolesRepository;
+    @Autowired
+    VkLinkRepository vkLinkRepository;
 
     Model model;
     String humanId;
@@ -49,6 +53,7 @@ public class FriendsController {
     @GetMapping("/getCode")
     public String getCode(@CookieValue(defaultValue = "noname") String humanId, Model model,
                           @RequestParam(required = false, defaultValue = "none") String code) throws ClientException, ApiException {
+        if (humanId.equals("noname")) return "redirect:/login";
         this.humanId = humanId;
         this.model = model;
         if (!code.equals("none")){
@@ -63,6 +68,11 @@ public class FriendsController {
             List<Integer> friendIds = vk.friends().get(actor).execute().getItems();
             ArrayList<VkUserData> data = new ArrayList<>();
             UsersGetQuery query = vk.users().get(service);
+
+            VkLink link = vkLinkRepository.existsById(Integer.parseInt(humanId)) ?
+                    vkLinkRepository.findById(Integer.parseInt(humanId)).get(0) : new VkLink();
+            link.setId(Integer.parseInt(humanId)).setAvatarUrl(vk.users().get(actor).userIds(res.getUserId() + "").fields(UserField.PHOTO_200).execute().get(0).getPhoto200());
+            vkLinkRepository.save(link);
             friendIds.forEach((id) -> {
                 try {
                     UserXtrCounters user = query.userIds(id + "").fields(UserField.PHOTO_200).execute().get(0);
@@ -80,33 +90,6 @@ public class FriendsController {
 
         ModelPreparer.prepare(this);
         return "code";
-    }
-
-    @GetMapping("/getToken")
-    public String getToken(@CookieValue(defaultValue = "noname") String humanId, Model model){
-        this.humanId = humanId;
-        this.model = model;
-
-        ModelPreparer.prepare(this);
-        //https://oauth.vk.com/access_token?client_id=7512626&client_secret=tZvRCSIitiIJCeCA4MLM&redirect_uri=http://18.191.156.108/getAccessToken&code=
-        return "code";
-    }
-
-    @GetMapping("/auth")
-    public String auth(@CookieValue(defaultValue = "noname") String humanId, Model model,
-                       @RequestParam String token, @RequestParam int id) throws ClientException, ApiException {
-        this.humanId = humanId;
-        this.model = model;
-
-        ModelPreparer.prepare(this);
-
-        UserActor actor = new UserActor(id, token);
-        HttpTransportClient client = new HttpTransportClient();
-        VkApiClient vk = new VkApiClient(client);
-        GetResponse friends = vk.friends().get(actor).execute();
-
-        System.out.println(Arrays.toString(friends.getItems().toArray()));
-        return "friends";
     }
 
     public ColorRepository getColorRepository() {

@@ -394,6 +394,51 @@ public class AndroidController {
         return "androidData";
     }
 
+    @PostMapping("/getAllAdminConfirmedBaskets")
+    public String getAllAdminConfirmedBaskets(Model model,
+                                         @RequestParam String login,
+                                         @RequestParam String password){
+        Account account = loginRepository.findByLoginAndPassword(login, password).isEmpty() ?
+                null : loginRepository.findByLoginAndPassword(login, password).get(0);
+        if (account != null){
+            JSONArray array = new JSONArray();
+            ArrayList<Basket> baskets = (ArrayList<Basket>) basketRepository.findAll();
+            baskets.forEach((basket) -> {
+                JSONObject basketObject = new JSONObject();
+                basketObject.put("id", basket.getId());
+                basketObject.put("product", basket.getProductId());
+                basketObject.put("productName", productRepository.findById(basket.getProductId()).get(0).getTitle());
+                basketObject.put("status", statusRepository.findById(basket.getId()).get(0).getStatus());
+                array.put(basketObject);
+            });
+
+            model.addAttribute("data", array.toString());
+        }
+        else {
+            model.addAttribute("data", "Go daleko!");
+        }
+        return "androidData";
+    }
+
+    @PostMapping("/setStatus")
+    public String setStatus(Model model,
+                            @RequestParam String login,
+                            @RequestParam String password,
+                            @RequestParam int basketId,
+                            @RequestParam String status){
+        Account account = loginRepository.findByLoginAndPassword(login, password).isEmpty() ?
+                null : loginRepository.findByLoginAndPassword(login, password).get(0);
+        if (account != null){
+            Status basketStatus = statusRepository.findById(basketId).get(0).setStatus(status);
+            statusRepository.save(basketStatus);
+            model.addAttribute("data", "true");
+        }
+        else {
+            model.addAttribute("data", "Go daleko!");
+        }
+        return "androidData";
+    }
+
     @PostMapping("/getAllUnconfirmedBaskets")
     public String getAllUnconfirmedBaskets(Model model,
                                          @RequestParam String login,

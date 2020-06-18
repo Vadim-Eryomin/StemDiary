@@ -29,6 +29,7 @@ public class ModelPreparer {
 
         Model model = c.getModel();
         int humanId = Integer.parseInt(c.getHumanId());
+        VkLink link = c.getVkLink();
 
         Account account = loginRepository.findById(humanId).get(0);
         ColorScheme color;
@@ -47,7 +48,7 @@ public class ModelPreparer {
         model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
         model.addAttribute("name", names.getName());
         model.addAttribute("surname", names.getSurname());
-        model.addAttribute("imgSrc", account.getImgSrc());
+        model.addAttribute("imgSrc", link == null ? account.getImgSrc() : link.getAvatarUrl());
 
         model.addAttribute("admin", roles.isAdmin());
     }
