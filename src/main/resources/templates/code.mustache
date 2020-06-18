@@ -36,7 +36,13 @@
     //    document.location.replace("http://18.191.156.108/auth?token="+token+"&id="+id);
     //}
 </script>
-{{friends}}
+{{#data}}
+    <img src="{{url}}">
+    <p>{{name}}</p>
+{{/data}}
+{{^data}}
+    <a href="https://oauth.vk.com/authorize?client_id=7512626&display=page&redirect_uri=http://18.191.156.108/getCode&scope=friends&response_type=code&v=5.110" class="btn btn-outline-success">Синхронизировать ВК</a>
+{{/data}}
 
 <!-- script for password edit --->
 <script src="js/password.js"></script>

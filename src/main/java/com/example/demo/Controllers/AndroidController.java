@@ -394,7 +394,7 @@ public class AndroidController {
         return "androidData";
     }
 
-    @GetMapping("/getAllUnconfirmedBaskets")
+    @PostMapping("/getAllUnconfirmedBaskets")
     public String getAllUnconfirmedBaskets(Model model,
                                          @RequestParam String login,
                                          @RequestParam String password){
