@@ -298,10 +298,10 @@ public class AndroidController {
                 Roles role = rolesRepository.findById(pupil.getId()).get(0);
                 if (role.isTeacher() || role.isAdmin()) return;
                 JSONObject pupilObject = new JSONObject();
-                Names name = namesRepository.findById(account.getId()).get(0);
+                Names name = namesRepository.findById(pupil.getId()).get(0);
                 pupilObject.put("name", name.getName());
                 pupilObject.put("surname", name.getSurname());
-                pupilObject.put("login", account.getLogin());
+                pupilObject.put("login", pupil.getLogin());
                 array.put(pupilObject);
             });
             model.addAttribute("data", array.toString());
@@ -322,15 +322,15 @@ public class AndroidController {
         if (account != null){
             JSONArray array = new JSONArray();
             ArrayList<Account> accounts = (ArrayList<Account>) loginRepository.findAll();
-            accounts.forEach((pupil) -> {
-                Roles role = rolesRepository.findById(pupil.getId()).get(0);
+            accounts.forEach((teacher) -> {
+                Roles role = rolesRepository.findById(teacher.getId()).get(0);
                 if (!role.isTeacher()) return;
-                JSONObject pupilObject = new JSONObject();
-                Names name = namesRepository.findById(account.getId()).get(0);
-                pupilObject.put("name", name.getName());
-                pupilObject.put("surname", name.getSurname());
-                pupilObject.put("login", account.getLogin());
-                array.put(pupilObject);
+                JSONObject teacherObject = new JSONObject();
+                Names name = namesRepository.findById(teacher.getId()).get(0);
+                teacherObject.put("name", name.getName());
+                teacherObject.put("surname", name.getSurname());
+                teacherObject.put("login", teacher.getLogin());
+                array.put(teacherObject);
             });
             model.addAttribute("data", array.toString());
         }
@@ -447,16 +447,21 @@ public class AndroidController {
                 null : loginRepository.findByLoginAndPassword(login, password).get(0);
         if (account != null){
             JSONArray array = new JSONArray();
-            ArrayList<UnconfirmedBasket> baskets = (ArrayList<UnconfirmedBasket>) unconfirmedBasketRepository.findByCustomerId(account.getId());
-            baskets.forEach((basket) -> {
-                JSONObject basketObject = new JSONObject();
-                basketObject.put("id", basket.getId());
-                basketObject.put("product", basket.getProductId());
-                basketObject.put("productName", productRepository.findById(basket.getProductId()).get(0).getTitle());
-                array.put(basketObject);
-            });
 
-            model.addAttribute("data", array.toString());
+            if (unconfirmedBasketRepository.existsByCustomerId(account.getId())) {
+                ArrayList<UnconfirmedBasket> baskets = (ArrayList<UnconfirmedBasket>) unconfirmedBasketRepository.findByCustomerId(account.getId());
+                baskets.forEach((basket) -> {
+                    JSONObject basketObject = new JSONObject();
+                    basketObject.put("id", basket.getId());
+                    basketObject.put("product", basket.getProductId());
+                    basketObject.put("productName", productRepository.findById(basket.getProductId()).get(0).getTitle());
+                    array.put(basketObject);
+                });
+                model.addAttribute("data", array.toString());
+            }
+            else {
+                model.addAttribute("data", "Nothing!");
+            }
         }
         else {
             model.addAttribute("data", "Go daleko!");

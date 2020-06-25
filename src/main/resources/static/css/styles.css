@@ -88,14 +88,14 @@ input:disabled{
 
 .profile-alert{
     width: 80%;
-    max-width: 1000px;
+    max-width: 800px;
     height: 10%;
     max-height: 300px;
     margin-left: auto;
     margin-right: auto;
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .profile{
         width: 75%;
         display: flex;
@@ -110,7 +110,7 @@ input:disabled{
     }
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .profile{
         width: 50%;
         display: flex;
@@ -148,7 +148,7 @@ input:disabled{
     margin-top: 10px;
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .colors{
         width: 75%;
         display: flex;
@@ -165,7 +165,7 @@ input:disabled{
     }
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .colors{
         width: 50%;
         display: flex;
@@ -217,7 +217,7 @@ input:disabled{
 }
 
 /* classes for shop page */
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .filter-container{
         position: fixed !important;
         top: -250px;
@@ -227,7 +227,7 @@ input:disabled{
     }
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .filter-container{
         position: fixed !important;
         top: 60px;
@@ -250,7 +250,7 @@ input:disabled{
     flex-flow: row wrap;
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .product-card{
         display: flex;
         justify-content: space-around;
@@ -263,7 +263,7 @@ input:disabled{
         width: 25vw;
     }
 }
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .product-card{
         display: flex;
         justify-content: space-around;
@@ -338,7 +338,7 @@ input:disabled{
 
 
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .timetable-card{
         width: 80%;
         background-color: white;
@@ -352,7 +352,7 @@ input:disabled{
     }
 }
 
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .timetable-card{
         width: 60%;
         background-color: white;
@@ -405,7 +405,7 @@ input:disabled{
     margin-left: auto;
     margin-right: auto;
 }
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 800px){
     .alert-container{
         position: absolute;
         left: 10vw;
@@ -417,7 +417,7 @@ input:disabled{
         align-items: center;
     }
 }
-@media only screen and (min-width: 1000px){
+@media only screen and (min-width: 800px){
     .alert-container{
         position: absolute;
         left: 40vw;

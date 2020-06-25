@@ -11,4 +11,6 @@ public interface UnconfirmedBasketRepository extends CrudRepository<UnconfirmedB
     List<UnconfirmedBasket> findById(int id);
     List<UnconfirmedBasket> findByCustomerId(int id);
     List<UnconfirmedBasket> findAll();
+
+    boolean existsByCustomerId(int id);
 }

@@ -29,7 +29,6 @@ public class ModelPreparer {
 
         Model model = c.getModel();
         int humanId = Integer.parseInt(c.getHumanId());
-        VkLink link = c.getVkLink();
 
         Account account = loginRepository.findById(humanId).get(0);
         ColorScheme color;
@@ -48,7 +47,6 @@ public class ModelPreparer {
         model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
         model.addAttribute("name", names.getName());
         model.addAttribute("surname", names.getSurname());
-        model.addAttribute("imgSrc", link == null ? account.getImgSrc() : link.getAvatarUrl());
 
         model.addAttribute("admin", roles.isAdmin());
     }
@@ -846,22 +844,6 @@ public class ModelPreparer {
 
         model.addAttribute("admin", roles.isAdmin());
 
-    }
-
-    public static void prepare(FriendsController c) {
-        ColorRepository colorRepository = c.getColorRepository();
-        RolesRepository rolesRepository = c.getRolesRepository();
-
-        Model model = c.getModel();
-        int humanId = Integer.parseInt(c.getHumanId());
-
-        ColorScheme color = colorRepository.findById(humanId).get(0);
-        Roles roles = rolesRepository.findById(humanId).get(0);
-
-        model.addAttribute("navColor", ColorTranslator.translateColor(color.getNavigationColor()));
-        model.addAttribute("bodyColor", ColorTranslator.translateColor(color.getBodyColor()));
-
-        model.addAttribute("admin", roles.isAdmin());
     }
 
 }

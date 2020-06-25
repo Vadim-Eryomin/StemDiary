@@ -2,10 +2,11 @@ package com.example.demo.Controllers.SimpleControllers;
 
 import com.example.demo.Domain.Account;
 import com.example.demo.Domain.ColorScheme;
-import com.example.demo.Domain.Names;
-import com.example.demo.Domain.VkLink;
 import com.example.demo.HelpClasses.ModelPreparer;
-import com.example.demo.Repositories.*;
+import com.example.demo.Repositories.ColorRepository;
+import com.example.demo.Repositories.LoginRepository;
+import com.example.demo.Repositories.NamesRepository;
+import com.example.demo.Repositories.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProfileController {
@@ -29,20 +29,17 @@ public class ProfileController {
     @Autowired
     NamesRepository namesRepository;
 
-    @Autowired
-    VkLinkRepository vkLinkRepository;
-
     Model model;
     String humanId;
-    VkLink vkLink;
+
 
     @GetMapping("/profile")
-    public String showProfile(Model model, @CookieValue(defaultValue = "noname") String humanId, @RequestParam(required = false, defaultValue = "") String navColor, @RequestParam(required = false, defaultValue = "") String bodyColor){
+    public String showProfile(Model model, @CookieValue(defaultValue = "noname") String humanId, @RequestParam(required = false, defaultValue = "") String navColor, @RequestParam(required = false, defaultValue = "") String bodyColor) {
         //redirect human if he hasn't login cookie
         if (humanId.equals("noname")) return "redirect:/login";
 
         //check color edit form
-        if (!bodyColor.equals("") && !navColor.equals("")){
+        if (!bodyColor.equals("") && !navColor.equals("")) {
             ColorScheme color = colorRepository.findById(Integer.parseInt(humanId)).get(0);
             color.setBodyColor(Integer.parseInt(bodyColor.split("#")[1], 16));
             color.setNavigationColor(Integer.parseInt(navColor.split("#")[1], 16));
@@ -52,9 +49,11 @@ public class ProfileController {
         //set data for model preparer
         this.model = model;
         this.humanId = humanId;
-        this.vkLink = vkLinkRepository.existsById(Integer.parseInt(humanId)) ? vkLinkRepository.findById(Integer.parseInt(humanId)).get(0) : null;
+
         //prepare model for this page
         ModelPreparer.prepare(this);
+
+        model.addAttribute("imgSrc", loginRepository.findById(Integer.parseInt(humanId)).get(0).getImgSrc());
         return "profile";
     }
 
@@ -62,21 +61,19 @@ public class ProfileController {
     public String editPassword(Model model, @CookieValue(defaultValue = "noname") String humanId,
                                @RequestParam String oldPassword,
                                @RequestParam String newPassword,
-                               @RequestParam String repeatPassword){
+                               @RequestParam String repeatPassword) {
         //redirect human if he hasn't login cookie
         if (humanId.equals("noname")) return "redirect:/login";
 
-        if(loginRepository.findById(Integer.parseInt(humanId)).get(0).getPassword().equals(oldPassword)){
-            if (newPassword.equals(repeatPassword)){
+        if (loginRepository.findById(Integer.parseInt(humanId)).get(0).getPassword().equals(oldPassword)) {
+            if (newPassword.equals(repeatPassword)) {
                 Account account = loginRepository.findById(Integer.parseInt(humanId)).get(0).setPassword(newPassword);
                 loginRepository.save(account);
                 model.addAttribute("success", "Вы сменили пароль!");
-            }
-            else {
+            } else {
                 model.addAttribute("warn", "Пароли не совпадают!");
             }
-        }
-        else {
+        } else {
             model.addAttribute("warn", "Введите ваш начальный пароль!");
         }
 
@@ -87,7 +84,6 @@ public class ProfileController {
         ModelPreparer.prepare(this);
         return "profile";
     }
-
 
 
     public RolesRepository getRolesRepository() {
@@ -114,12 +110,5 @@ public class ProfileController {
         return humanId;
     }
 
-    public VkLink getVkLink() {
-        return vkLink;
-    }
 
-    public ProfileController setVkLink(VkLink vkLink) {
-        this.vkLink = vkLink;
-        return this;
-    }
 }
