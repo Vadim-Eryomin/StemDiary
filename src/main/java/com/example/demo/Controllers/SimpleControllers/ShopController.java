@@ -59,9 +59,6 @@ public class ShopController {
             UnconfirmedBasket basket = new UnconfirmedBasket();
             basket.setCustomerId(Integer.parseInt(humanId)).setProductId(buy);
             unconfirmedBasketRepository.save(basket);
-            Product product = productRepository.findById(basket.getProductId()).get(0);
-            product.setCount(product.getCount()-1);
-            productRepository.save(product);
         }
 
         return "shop";

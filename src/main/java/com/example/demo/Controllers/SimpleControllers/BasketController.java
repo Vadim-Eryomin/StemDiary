@@ -63,14 +63,21 @@ public class BasketController {
         this.model = model;
 
         UnconfirmedBasket unBasket = unconfirmedBasketRepository.findById(id).get(0);
-        Basket basket = new Basket();
-        basket.setProductId(unBasket.getProductId()).setCustomerId(unBasket.getCustomerId());
-        basketRepository.save(basket);
+        if (productRepository.findById(unBasket.getProductId()).get(0).getCount() > 0){
+            Basket basket = new Basket();
+            basket.setProductId(unBasket.getProductId()).setCustomerId(unBasket.getCustomerId());
+            basketRepository.save(basket);
 
-        Status status = new Status();
-        status.setId(basket.getId()).setStatus("Не прочитано");
-        statusRepository.save(status);
-        unconfirmedBasketRepository.delete(unBasket);
+            productRepository.save(productRepository.findById(basket.getProductId()).get(0).setCount(productRepository.findById(basket.getProductId()).get(0).getCount()-1));
+
+            Status status = new Status();
+            status.setId(basket.getId()).setStatus("Не прочитано");
+            statusRepository.save(status);
+            unconfirmedBasketRepository.delete(unBasket);
+        }
+        else {
+            model.addAttribute("warn", "Извините, товара недостаточно, попробуйте позже!");
+        }
 
         //prepare model for page
         ModelPreparer.prepare(this);

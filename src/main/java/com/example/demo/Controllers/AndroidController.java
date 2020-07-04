@@ -93,17 +93,6 @@ public class AndroidController {
                 JSONTeacherCourse courseData = new JSONTeacherCourse();
                 Names teacher = namesRepository.findById(course.getTeacherId()).get(0);
                 ArrayList<Pupil> pupils = pupilRepository.findByCourseId(course.getId());
-                ArrayList<Integer> pupilIds = new ArrayList<>();
-                ArrayList<String> pupilNames = new ArrayList<>();
-                pupils.forEach((pupil) -> {
-                    pupilIds.add(pupil.getPupilId());
-
-                    Names pupilName = namesRepository.findById(pupil.getPupilId()).get(0);
-                    pupilNames.add(pupilName.getName() + " " + pupilName.getSurname());
-                });
-
-                courseData.setPupilId(pupilIds.toArray());
-                courseData.setPupilName(pupilNames.toArray());
                 courseData.setTeacherId(teacher.getId());
                 courseData.setTeacherName(teacher.getName() + " " + teacher.getSurname());
                 courseData.setAvatarUrl(course.getImgSrc());
@@ -147,7 +136,7 @@ public class AndroidController {
                 courseData.setPostDate(format.format(postDate));
 
                 JSONObject courseObject = new JSONObject();
-                courseObject.put("pupilId", courseData.getPupilId());
+                courseObject.put("courseName", course.getName());
                 courseObject.put("teacherId", courseData.getTeacherId());
                 courseObject.put("teacherName", courseData.getTeacherName());
                 courseObject.put("teacherAvatarUrl", account.getImgSrc());
@@ -159,6 +148,45 @@ public class AndroidController {
                 courseObject.put("date", courseData.getDate());
                 courseObject.put("postDate", courseData.getPostDate());
 
+                long finalDate = date;
+                JSONArray pupilsArray = new JSONArray();
+                pupils.forEach(pupil -> {
+                    Mark preMark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), preDate, pupil.getPupilId()) ?
+                            markRepository.findByCourseIdAndDateAndPupilId(course.getId(), preDate, pupil.getPupilId()).get(0) : null;
+                    Mark mark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), finalDate, pupil.getPupilId()) ?
+                            markRepository.findByCourseIdAndDateAndPupilId(course.getId(), finalDate, pupil.getPupilId()).get(0) : null;
+                    Mark postMark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), postDate, pupil.getPupilId()) ?
+                            markRepository.findByCourseIdAndDateAndPupilId(course.getId(), postDate, pupil.getPupilId()).get(0) : null;
+                    Names names = namesRepository.findById(pupil.getPupilId()).get(0);
+                    Account pupilAccount = loginRepository.findById(pupil.getPupilId()).get(0);
+
+                    JSONObject pupilObject = new JSONObject();
+                    pupilObject.put("name", names.getName() + " " + names.getSurname());
+                    pupilObject.put("login", pupilAccount.getLogin());
+
+                    JSONArray preMarkArray = new JSONArray();
+                    preMarkArray.put(preMark == null ? null : preMark.getMarkA());
+                    preMarkArray.put(preMark == null ? null : preMark.getMarkB());
+                    preMarkArray.put(preMark == null ? null : preMark.getMarkC());
+                    preMarkArray.put(preMark == null ? null : preMark.getTotal());
+                    pupilObject.put("preMark", preMarkArray);
+
+                    JSONArray markArray = new JSONArray();
+                    markArray.put(mark == null ? null : mark.getMarkA());
+                    markArray.put(mark == null ? null : mark.getMarkB());
+                    markArray.put(mark == null ? null : mark.getMarkC());
+                    markArray.put(mark == null ? null : mark.getTotal());
+                    pupilObject.put("mark", markArray);
+
+                    JSONArray postMarkArray = new JSONArray();
+                    postMarkArray.put(postMark == null ? null : postMark.getMarkA());
+                    postMarkArray.put(postMark == null ? null : postMark.getMarkB());
+                    postMarkArray.put(postMark == null ? null : postMark.getMarkC());
+                    postMarkArray.put(postMark == null ? null : postMark.getTotal());
+                    pupilObject.put("postMark", postMarkArray);
+                    pupilsArray.put(pupilObject);
+                });
+                courseObject.put("pupils", pupilsArray);
                 array.put(courseObject);
             });
 
@@ -240,6 +268,33 @@ public class AndroidController {
                 courseObject.put("date", courseData.getDate());
                 courseObject.put("postDate", courseData.getPostDate());
                 courseObject.put("courseName", courseData.getCourseName());
+                Mark preMark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), preDate, pupil.getPupilId()) ?
+                        markRepository.findByCourseIdAndDateAndPupilId(course.getId(), preDate, pupil.getPupilId()).get(0) : null;
+                Mark mark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), date, pupil.getPupilId()) ?
+                        markRepository.findByCourseIdAndDateAndPupilId(course.getId(), date, pupil.getPupilId()).get(0) : null;
+                Mark postMark = markRepository.existsByCourseIdAndDateAndPupilId(course.getId(), postDate, pupil.getPupilId()) ?
+                        markRepository.findByCourseIdAndDateAndPupilId(course.getId(), postDate, pupil.getPupilId()).get(0) : null;
+
+                JSONArray preMarkArray = new JSONArray();
+                preMarkArray.put(preMark == null ? null : preMark.getMarkA());
+                preMarkArray.put(preMark == null ? null : preMark.getMarkB());
+                preMarkArray.put(preMark == null ? null : preMark.getMarkC());
+                preMarkArray.put(preMark == null ? null : preMark.getTotal());
+                courseObject.put("preMark", preMarkArray);
+
+                JSONArray markArray = new JSONArray();
+                markArray.put(mark == null ? null : mark.getMarkA());
+                markArray.put(mark == null ? null : mark.getMarkB());
+                markArray.put(mark == null ? null : mark.getMarkC());
+                markArray.put(mark == null ? null : mark.getTotal());
+                courseObject.put("mark", markArray);
+
+                JSONArray postMarkArray = new JSONArray();
+                postMarkArray.put(postMark == null ? null : postMark.getMarkA());
+                postMarkArray.put(postMark == null ? null : postMark.getMarkB());
+                postMarkArray.put(postMark == null ? null : postMark.getMarkC());
+                postMarkArray.put(postMark == null ? null : postMark.getTotal());
+                courseObject.put("postMark", postMarkArray);
 
                 array.put(courseObject);
             });
@@ -252,23 +307,23 @@ public class AndroidController {
         return "androidData";
     }
 
-    @PostMapping("setStudentRate/{login}/{password}/{courseName}/{date}/{a}/{b}/{c}/{pupilLogin}")
+    @PostMapping("setStudentRate")
     public String setStudentRate(Model model,
-                                 @PathVariable String login,
-                                 @PathVariable String password,
-                                 @PathVariable String courseName,
-                                 @PathVariable String date,
-                                 @PathVariable String a,
-                                 @PathVariable String b,
-                                 @PathVariable String c,
-                                 @PathVariable String pupilLogin) throws ParseException {
+                                 @RequestParam String login,
+                                 @RequestParam String password,
+                                 @RequestParam String courseName,
+                                 @RequestParam String date,
+                                 @RequestParam String a,
+                                 @RequestParam String b,
+                                 @RequestParam String c,
+                                 @RequestParam String pupilLogin) throws ParseException {
         int idOfCourse = courseRepository.findByName(courseName).get(0).getId();
         long courseDate = convertDate(date);
 
         Account account = loginRepository.findByLoginAndPassword(login, password).get(0);
         Roles roles = rolesRepository.findById(account.getId()).get(0);
         if (roles.isTeacher() || roles.isAdmin()) {
-            Mark mark =  markRepository.findByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(pupilLogin).get(0).getId()).isEmpty() ?
+            Mark mark =  markRepository.existsByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(pupilLogin).get(0).getId()) ?
                     new Mark().setCourseId(idOfCourse).setPupilId(loginRepository.findByLogin(pupilLogin).get(0).getId()).setMarkA(Integer.parseInt(a))
                     .setMarkB(Integer.parseInt(b)).setMarkC(Integer.parseInt(c)).setDate(courseDate).setAdd(false).setTotal((int)((Integer.parseInt(a)+Integer.parseInt(b)+Integer.parseInt(c))/3)):
                     markRepository.findByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(login).get(0).getId()).get(0);
@@ -454,6 +509,8 @@ public class AndroidController {
                     JSONObject basketObject = new JSONObject();
                     basketObject.put("id", basket.getId());
                     basketObject.put("product", basket.getProductId());
+                    basketObject.put("imageUrl", productRepository.findById(basket.getProductId()).get(0).getImgSrc());
+                    basketObject.put("cost", productRepository.findById(basket.getProductId()).get(0).getCost());
                     basketObject.put("productName", productRepository.findById(basket.getProductId()).get(0).getTitle());
                     array.put(basketObject);
                 });
@@ -513,9 +570,10 @@ public class AndroidController {
         Account account = loginRepository.findByLoginAndPassword(login, password).isEmpty() ?
                 null : loginRepository.findByLoginAndPassword(login, password).get(0);
         if (account != null){
+
             UnconfirmedBasket basket = unconfirmedBasketRepository.findById(basketId).isEmpty() ?
                     null : unconfirmedBasketRepository.findById(basketId).get(0);
-            if (basket != null){
+            if (productRepository.findById(basket.getProductId()).get(0).getCount() > 0){
                 Basket confirmedBasket = new Basket().setCustomerId(basket.getCustomerId()).setProductId(basket.getProductId());
                 basketRepository.save(confirmedBasket);
 
@@ -523,10 +581,12 @@ public class AndroidController {
                 statusRepository.save(status);
 
                 unconfirmedBasketRepository.delete(basket);
+                    productRepository.save(productRepository.findById(basket.getProductId()).get(0).setCount(productRepository.findById(basket.getProductId()).get(0).getCount()-1));
                 model.addAttribute("data", "Good");
+
             }
             else {
-                model.addAttribute("data", "Я хз!");
+                model.addAttribute("data", "Not enough");
             }
         }
         else {
@@ -568,22 +628,23 @@ public class AndroidController {
                                @RequestParam String login,
                                @RequestParam String password,
                                @RequestParam String name,
-                               @RequestParam long date,
+                               @RequestParam String date,
                                @RequestParam String[] pupils,
                                @RequestParam String teacher,
-                               @RequestParam String imgSrc){
+                               @RequestParam String imgSrc) throws ParseException {
         if (!loginRepository.findByLoginAndPassword(login, password).isEmpty()){
             Course course = new Course();
 
             Account teacherAccount = loginRepository.findByLogin(teacher).get(0);
             Names teacherName = namesRepository.findById(teacherAccount.getId()).get(0);
-
+            System.out.println(convertDate(date));
+            System.out.println(date);
             course.setTeacherId(teacherAccount.getId())
-                    .setDate(date)
+                    .setDate(convertDate(date))
                     .setImgSrc(imgSrc)
                     .setName(name)
                     .setTeacherName(teacherName.getName() + " " + teacherName.getSurname())
-                    .setNextDate(new SimpleDateFormat("dd.MM.yyyy hh:mm").format(new Date(date)));
+                    .setNextDate(date);
             courseRepository.save(course);
 
             for (String pupilLogin :

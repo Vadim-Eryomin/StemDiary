@@ -11,4 +11,5 @@ public interface MarkRepository extends CrudRepository<Mark, Integer> {
     List<Mark> findAll();
     List<Mark> findByCourseIdAndDate(int courseId, long date);
     List<Mark> findByCourseIdAndDateAndPupilId(int courseId, long date, int pupilId);
+    boolean existsByCourseIdAndDateAndPupilId(int courseId, long date, int pupilId);
 }

@@ -103,16 +103,7 @@ public class Mark {
 
     @Override
     public String toString() {
-        return "Mark{" +
-                "id=" + id +
-                ", pupilId=" + pupilId +
-                ", date=" + date +
-                ", courseId=" + courseId +
-                ", markA=" + markA +
-                ", markB=" + markB +
-                ", markC=" + markC +
-                ", total=" + total +
-                '}';
+        return "{\"a\": \""+ getMarkA() +"\", \"b\": \""+getMarkB()+"\", \"c\":\""+getMarkC()+"\", \"total\":\""+getTotal()+"\"}";
     }
 
 }

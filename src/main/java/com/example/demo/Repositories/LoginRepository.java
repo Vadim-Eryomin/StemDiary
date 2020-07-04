@@ -11,8 +11,7 @@ public interface LoginRepository extends CrudRepository<Account, Integer> {
     List<Account> findByLogin(String login);
     List<Account> findById(int id);
 
-    @Query("SELECT coalesce(max(a.id), 0) FROM Account a")
-    Long getMaxId();
+    boolean existsByLogin(String login);
 
 
 }
