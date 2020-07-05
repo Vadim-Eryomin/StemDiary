@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.management.relation.Role;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -323,10 +324,10 @@ public class AndroidController {
         Account account = loginRepository.findByLoginAndPassword(login, password).get(0);
         Roles roles = rolesRepository.findById(account.getId()).get(0);
         if (roles.isTeacher() || roles.isAdmin()) {
-            Mark mark =  markRepository.existsByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(pupilLogin).get(0).getId()) ?
+            Mark mark =  !markRepository.existsByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(pupilLogin).get(0).getId()) ?
                     new Mark().setCourseId(idOfCourse).setPupilId(loginRepository.findByLogin(pupilLogin).get(0).getId()).setMarkA(Integer.parseInt(a))
                     .setMarkB(Integer.parseInt(b)).setMarkC(Integer.parseInt(c)).setDate(courseDate).setAdd(false).setTotal((int)((Integer.parseInt(a)+Integer.parseInt(b)+Integer.parseInt(c))/3)):
-                    markRepository.findByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(login).get(0).getId()).get(0);
+                    markRepository.findByCourseIdAndDateAndPupilId(idOfCourse, courseDate, loginRepository.findByLogin(pupilLogin).get(0).getId()).get(0);
             if (!mark.isAdd()) {
                 StemCoin stemCoin = stemCoinRepository.findById(mark.getPupilId()).get(0);
                 stemCoin.setStemcoins(stemCoin.getStemcoins() + mark.getTotal());
@@ -334,6 +335,35 @@ public class AndroidController {
                 model.addAttribute("data", "true");
             }
         } else {
+            model.addAttribute("data", "Go daleko!");
+        }
+
+        return "androidData";
+    }
+
+    @PostMapping("/setHomework")
+    public String setHomework(Model model,
+                              @RequestParam String login,
+                              @RequestParam String password,
+                              @RequestParam int courseId,
+                              @RequestParam String date,
+                              @RequestParam String homework) throws ParseException {
+        long homeworkDate = convertDate(date);
+        boolean hasAccount = loginRepository.existsByLoginAndPassword(login, password);
+        if (hasAccount){
+            Roles roles = rolesRepository.findById(loginRepository.findByLoginAndPassword(login, password).get(0).getId()).get(0);
+            if (roles.isAdmin() || roles.isTeacher()){
+                Homework needHomework = homeworkRepository.existsByCourseIdAndDate(courseId, homeworkDate) ?
+                        new Homework().setDate(homeworkDate).setCourseId(courseId).setHomework(homework) :
+                        homeworkRepository.findByCourseIdAndDate(courseId, homeworkDate).get(0).setHomework(homework);
+                homeworkRepository.save(needHomework);
+                model.addAttribute("data", "true");
+            }
+            else {
+                model.addAttribute("data", "Go daleko!");
+            }
+        }
+        else {
             model.addAttribute("data", "Go daleko!");
         }
 
@@ -661,6 +691,8 @@ public class AndroidController {
         }
         return "androidData";
     }
+
+
 
 
     public static long convertDate(String date) throws ParseException {

@@ -12,6 +12,7 @@ public interface LoginRepository extends CrudRepository<Account, Integer> {
     List<Account> findById(int id);
 
     boolean existsByLogin(String login);
+    boolean existsByLoginAndPassword(String login, String password);
 
 
 }

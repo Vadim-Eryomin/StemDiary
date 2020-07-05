@@ -586,8 +586,8 @@ public class ModelPreparer {
 
         System.out.println("that's all");
         model.addAttribute("homework", homework.getHomework());
-        model.addAttribute("pre", courseDate == 0 ? date.getTime() : courseDate - 604800000);
-        model.addAttribute("post", courseDate == 0 ? date.getTime() : courseDate + 604800000);
+        model.addAttribute("pre", (courseDate == 0 ? date.getTime() : courseDate) - 604800000);
+        model.addAttribute("post", (courseDate == 0 ? date.getTime() : courseDate) + 604800000);
 //        model.addAttribute("id", homework.getId());
         model.addAttribute("date", courseDate == 0 ? date.getTime() : courseDate);
         model.addAttribute("courseId", courseId);
